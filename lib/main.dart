@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart'; // Import GetStorage
+import 'package:menusystemfront/res/app_url/app_url.dart';
 import 'dart:html' as html; // Import html package for web URL access
 import 'package:menusystemfront/res/colors/app_color.dart';
 import 'package:menusystemfront/res/dependencyinjection/dependency_injection.dart';
@@ -11,7 +12,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init(); // Initialize GetStorage
   dependencyinjection.onInit();
-  
   Get.updateLocale(const Locale('ar')); // Switch to Arabic
             
   runApp(const MyApp());
