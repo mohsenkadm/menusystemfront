@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'dart:html' as html; // Import html package for web URL access
 import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:menusystemfront/data/network/base_api_services.dart';
@@ -12,6 +12,7 @@ class NetworkApiServices extends BaseApiServices {
   final box = GetStorage();
   @override
   Future<dynamic> getApi(String url) async {
+    
     if (kDebugMode) {
       print(url);
     }

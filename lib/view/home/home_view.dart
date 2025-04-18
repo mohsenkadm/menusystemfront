@@ -1,23 +1,16 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:menusystemfront/data/response/status.dart';
-import 'package:menusystemfront/models/products/category_model.dart';
 import 'package:menusystemfront/models/products/subCatecory_model.dart';
-import 'package:menusystemfront/res/assets/image_assets.dart';
 import 'package:menusystemfront/res/colors/app_color.dart';
-import 'package:menusystemfront/res/components/custom_card.dart';
 import 'package:menusystemfront/res/components/general_exception.dart';
 import 'package:menusystemfront/res/components/internet_exceptions_widget.dart';
-import 'package:menusystemfront/res/routes/routes_name.dart';
-import 'package:menusystemfront/utils/utils.dart';
 import 'package:menusystemfront/view/home/widgets/FillCtegoryData.dart';
 import 'package:menusystemfront/view/home/widgets/FillSubCategoryData.dart';
 import 'package:menusystemfront/view/home/widgets/NameRestourant.dart';
 import 'package:menusystemfront/view/home/widgets/containerbottom.dart';
-import 'package:menusystemfront/view/home/widgets/custom_outlined_button.dart';
 import 'package:menusystemfront/view_model/controller/products/product_view_model.dart';
 
 class homeview extends StatefulWidget {
