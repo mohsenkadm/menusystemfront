@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart'; // Import GetStorage
-import 'package:menusystemfront/res/app_url/app_url.dart';
-import 'dart:html' as html; // Import html package for web URL access
-import 'package:menusystemfront/res/colors/app_color.dart';
+ import 'package:menusystemfront/res/colors/app_color.dart';
 import 'package:menusystemfront/res/dependencyinjection/dependency_injection.dart';
 import 'package:menusystemfront/res/getx_loclization/languages.dart';
 import 'package:menusystemfront/res/routes/routes.dart';
