@@ -1,10 +1,8 @@
-import 'dart:html' as html; // Import html package for web URL access
-
+ 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:menusystemfront/res/assets/image_assets.dart';
+ import 'package:menusystemfront/res/assets/image_assets.dart';
 import 'package:menusystemfront/res/colors/app_color.dart';
 import 'package:menusystemfront/res/routes/routes_name.dart';
 import 'package:menusystemfront/view/home/home_view.dart';
@@ -25,19 +23,7 @@ class _navbarState extends State<navbar> {
 
   @override
   void initState() {
-    // Extract the name dynamically from the current URL
-    final url = html.window.location.href; // Get the current URL
-    final name =
-        Uri.parse(url).pathSegments.isNotEmpty
-            ? Uri.parse(url)
-                .pathSegments
-                .last // Extract the last segment
-            : ''; // Default to an empty string if no segment exists
-    GetStorage().write(
-      'nameRes',
-      name,
-    ); // Save the extracted name in GetStorage
-
+     
     productsController.getResInfoApitApi();
     super.initState();
   }
