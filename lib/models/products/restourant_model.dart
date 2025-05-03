@@ -19,6 +19,10 @@ class ResInfoModel {
   String? dateInsert;
   String? logo;
   String? background;
+  String? wifi;
+  String?whatsapp;
+  String? insta;
+  String? face;
 
   ResInfoModel(
       {this.restaurantId,
@@ -40,7 +44,11 @@ class ResInfoModel {
       this.isUsedSubCategory,
       this.dateInsert,
       this.logo,
-      this.background,});
+      this.background,
+      this.wifi,
+      this.face,
+      this.insta,
+      this.whatsapp});
 
   ResInfoModel.fromJson(Map<String, dynamic> json) {
     restaurantId = json['restaurantId'];
@@ -63,5 +71,9 @@ class ResInfoModel {
     dateInsert = json['dateInsert'];
     logo = json['logo'];
     background = json['background'];
+    whatsapp=json['whatsapp'];
+    wifi=json['wifi'];
+    face=json['face'];
+    insta=json['insta'];
   } 
 }
