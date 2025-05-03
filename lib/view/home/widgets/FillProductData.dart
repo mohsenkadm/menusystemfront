@@ -28,7 +28,7 @@ class FillProductData extends StatelessWidget {
     final timeName =
         isArabic ? 'دقيقة' : 'Min'; // Set time name based on language
 
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         DialogProduct(productsController,isArabic, prodModel,pricename, timeName );
       },
@@ -80,7 +80,7 @@ class FillProductData extends StatelessWidget {
                 ),
                 child: Text(
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: AppColor.blackColor,
                   ),

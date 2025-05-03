@@ -32,8 +32,8 @@ class NameRestourant extends StatelessWidget {
             ),
             Text(
               style: const TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                fontWeight: FontWeight.normal,
                 color: AppColor.whiteColor,
               ),
               isArabic

@@ -19,7 +19,7 @@ class FillSubCategoryData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         Get.toNamed(
           RouteName.productsView,
@@ -27,13 +27,12 @@ class FillSubCategoryData extends StatelessWidget {
         );
       },
       child: Container(
-       height: 150,
-       width: double.infinity, 
+       height: 220,
+       width: double.infinity,
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        padding: const EdgeInsets.all(0), 
+        padding: const EdgeInsets.all(0),
        decoration: BoxDecoration(
          borderRadius: BorderRadius.circular(40),
-          
          boxShadow: [
            BoxShadow(
              color: Colors.black.withOpacity(0.2),
@@ -49,16 +48,28 @@ class FillSubCategoryData extends StatelessWidget {
          ),
        ),
        child: Center(
-         child: Text(
-           style: const TextStyle(
-             fontSize: 40,
-             fontWeight: FontWeight.bold,
-             wordSpacing: 2,
-             color: Colors.white,
+         child: Container(
+           decoration: BoxDecoration(
+               boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          blurRadius: 15,
+                        offset: const Offset(0, 3),
+                      )
+                   ]
+
            ),
-           isArabic
-               ? subcategoryModel.subCategoryName.toString()
-               : subcategoryModel.subCategoryNameEn.toString(),
+           child: Text(
+             style: const TextStyle(
+               fontSize: 20,
+               fontWeight: FontWeight.bold,
+               wordSpacing: 2,
+               color: Colors.white,
+             ),
+             isArabic
+                 ? subcategoryModel.subCategoryName.toString()
+                 : subcategoryModel.subCategoryNameEn.toString(),
+           ),
          ),
        ),
               ),

@@ -196,7 +196,7 @@ class _ProductsCartState extends State<ProductsCartView> {
                             const SizedBox(height: 10),
                             // Price Container
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
                                   padding: const EdgeInsets.all(8),
@@ -213,7 +213,7 @@ class _ProductsCartState extends State<ProductsCartView> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 100),
+                                const SizedBox(width: 50),
                                 // Time Container
                                 Container(
                                   padding: const EdgeInsets.all(8),
@@ -230,6 +230,8 @@ class _ProductsCartState extends State<ProductsCartView> {
                                     ),
                                   ),
                                 ),
+                                const SizedBox(width: 50),
+
                               ],
                             ),
 

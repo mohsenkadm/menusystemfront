@@ -53,7 +53,6 @@ class _ProductsCatalogState extends State<ProductsView> {
 
         return Stack(
           children: [
-            // Background Image
             if (backgroundImage != null && backgroundImage.isNotEmpty)
               Container(
                 width: double.infinity,
@@ -78,13 +77,9 @@ class _ProductsCatalogState extends State<ProductsView> {
               physics: const AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
-                  // Category Section
-                  _buildCategorySection(status, isArabic),
-                  
-                  // Product List
+                  SizedBox(height: 100,),
                   _buildProductSection(status, isArabic, products),
-                  
-                  // Bottom Container
+                  SizedBox(height: 40,),
                   containerbottom(
                     screenWidth: MediaQuery.of(context).size.width,
                     isArabic: isArabic,
@@ -149,16 +144,6 @@ class _ProductsCatalogState extends State<ProductsView> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 10, right: 20),
-              child: Text(
-                isArabic ? 'المنتجات' : 'Products',
-                textAlign: isArabic ? TextAlign.right : TextAlign.left,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppColor.whiteColor,
-                    ),
-              ),
-            ),
             products.isEmpty
                 ? SizedBox(
                     height: 200,

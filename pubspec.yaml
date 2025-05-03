@@ -44,18 +44,18 @@ dependencies:
   shimmer: ^3.0.0
   loading_animation_widget: ^1.2.1
   share_plus: ^10.0.2
-  intl: ^0.19.0
+  intl: ^0.20.2
   dropdown_button2: ^2.3.9
   awesome_dialog: ^3.2.1
-  image_picker: ^0.8.0+3
-  geolocator: ^10.1.0
+  image_picker: ^1.1.2
+  geolocator: ^14.0.0
   lottie: ^3.1.2
-  flutter_map: ^7.0.2
+  flutter_map: ^8.1.1
   latlong2: ^0.9.1
   cached_network_image: ^3.4.1
   get_time_ago: ^2.0.0
   url_launcher: ^6.3.1
-  fl_chart: ^0.69.0  
+  fl_chart: ^0.71.0  
   dio: ^5.8.0+1
 dev_dependencies:
   flutter_test:

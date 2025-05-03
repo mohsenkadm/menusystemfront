@@ -1,4 +1,4 @@
- 
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,7 +19,7 @@ class navbar extends StatefulWidget {
 class _navbarState extends State<navbar> {
   final productsController = Get.find<ProductsController>();
   final ScrollController _scrollController =
-      ScrollController(); // Add ScrollController
+      ScrollController();
 
   @override
   void initState() {
@@ -39,38 +39,35 @@ class _navbarState extends State<navbar> {
     return Obx(
       () => Scaffold(
         floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 200),
+          padding: const EdgeInsets.only(bottom: 50),
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(40)),
             child: FloatingActionButton(
               backgroundColor: AppColor.whiteColor,
               onPressed: () {
-                _scrollController.animateTo(
-                  0, // Scroll to the top
-                  duration: const Duration(
-                    milliseconds: 500,
-                  ), // Animation duration
-                  curve: Curves.easeInOut, // Animation curve
+                _scrollController.animateTo(0,
+                  duration: const Duration(milliseconds: 500,),
+                  curve: Curves.easeInOut,
                 );
               },
               child: const Icon(Icons.keyboard_arrow_up),
             ),
           ),
         ),
-        extendBodyBehindAppBar: true, // Allows background to show under AppBar
+        extendBodyBehindAppBar: true,
         appBar: my_app_bar(),
         body: Stack(
           children: [
             Container(
-              width: double.infinity, // Full width
-              height: double.infinity, // Full height
+              width: double.infinity,
+              height: double.infinity,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
                     productsController.resInfoModeldata?.value?.background ??
                         "",
                   ),
-                  fit: BoxFit.cover, // Ensures the image covers the entire area
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -78,25 +75,24 @@ class _navbarState extends State<navbar> {
             Container(
               width: double.infinity,
               height: double.infinity,
-              color: Colors.black.withOpacity(0.7), // 10% black overlay
+              color: Colors.black.withOpacity(0.8), // 10% black overlay
             ),
             homeview(
               scrollController: _scrollController,
-            ), // Pass ScrollController to homeview
+            ),
           ],
         ),
       ),
     );
   }
 
-  // ignore: non_constant_identifier_names
   AppBar my_app_bar() {
     final isArabic =
-        Get.locale?.languageCode == 'ar'; // Check if the language is Arabic
+        Get.locale?.languageCode == 'ar';
     final pricename =
-        isArabic ? 'دينار' : 'IQD'; // Set price name based on language
+        isArabic ? 'دينار' : 'IQD';
     final timeName =
-        isArabic ? 'دقيقة' : 'Min'; // Set time name based on language
+        isArabic ? 'دقيقة' : 'Min';
 
     return AppBar(
       backgroundColor: Colors.transparent, // Makes AppBar transparent

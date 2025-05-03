@@ -18,6 +18,10 @@ class ProductsController extends GetxController {
   final listItemCard_List = [].obs;
   Rxn<ResInfoModel>? resInfoModeldata = Rxn<ResInfoModel>();
 
+  // Add these new observables
+  final selectedSubCategoryId = Rx<int?>(null);
+  final selectedCategoryId = Rx<int?>(null);
+
   RxDouble selectedPrice = 30000.0.obs;
   RxDouble selectedMintie = 20.0.obs;
   RxString error = ''.obs;
@@ -49,83 +53,117 @@ class ProductsController extends GetxController {
 
   void setError(String _value) => error.value = _value;
 
-  Future<void> getproductsApi({ 
-    int categoryId = 0,
-  }) async { 
-    int subCategoryId = 0;
-    subCategoryId=Get.arguments==null?0: Get.arguments['subCategoryId'] ?? 0;
-    String parameter = "$categoryId,$subCategoryId,%20,1000,${selectedPrice.value},3,${selectedMintie.value}";
+  // Modified to use selectedSubCategoryId
+  Future<void> getproductsApi({int categoryId = 0}) async {
+    rxRequestStatus.value = Status.LOADING;
+    String parameter = "$categoryId,${selectedSubCategoryId.value ?? 0},%20,1000,${selectedPrice.value},3,${selectedMintie.value}";
     await _api
         .getProductApi(parameter)
         .then((value) {
-          setRxRequestStatus(Status.COMPLETED);
-          setproductsList(value);
-        })
+      setRxRequestStatus(Status.COMPLETED);
+      setproductsList(value);
+    })
         .onError((error, stackTrace) {
-          setError(error.toString());
-          setRxRequestStatus(Status.ERROR);
-        });
+      setError(error.toString());
+      setRxRequestStatus(Status.ERROR);
+    });
   }
 
   Future<void> getCategoryApi() async {
     await _api
         .getCategoryApi()
         .then((value) {
-          setRxRequestStatus(Status.COMPLETED);
-          setCategoryList(value);
-          if (resInfoModeldata?.value != null) {
-            if (resInfoModeldata?.value?.isUsedSubCategory == true) {
-              int categoryid = category_List[0].categoryId;
-              getSubCategoryApi(categoryid: categoryid);
-            }
-          }
-        })
+      setRxRequestStatus(Status.COMPLETED);
+      setCategoryList(value);
+      if (resInfoModeldata?.value != null) {
+        if (resInfoModeldata?.value?.isUsedSubCategory == true) {
+          int categoryid = category_List[0].categoryId;
+          selectedCategoryId.value = categoryid; // Track selected category
+          getSubCategoryApi(categoryid: categoryid);
+        }
+      }
+    })
         .onError((error, stackTrace) {
-          setError(error.toString());
-          setRxRequestStatus(Status.ERROR);
-        });
+      setError(error.toString());
+      setRxRequestStatus(Status.ERROR);
+    });
   }
 
   Future<void> getSubCategoryApi({int categoryid = 0}) async {
+    print("Fetching subcategories...");
+
     await _api
         .getSubCategoryApi(categoryid)
         .then((value) {
-          setRxRequestStatus(Status.COMPLETED);
-          setSubCategoryList(value);
-        })
+      setRxRequestStatus(Status.COMPLETED);
+      setSubCategoryList(value);
+    })
         .onError((error, stackTrace) {
-          setError(error.toString());
-          setRxRequestStatus(Status.ERROR);
-        });
+      setError(error.toString());
+      setRxRequestStatus(Status.ERROR);
+    });
+  }
+
+  Future<void> getProductsBySubCategoryApi(int subCategoryId) async {
+    rxRequestStatus.value = Status.LOADING;
+    selectedSubCategoryId.value = subCategoryId; // Track the selected subcategory
+
+    // Use your existing parameter format but focus on the subcategory
+    String parameter = "0,$subCategoryId,%20,1000,${selectedPrice.value},3,${selectedMintie.value}";
+
+    await _api
+        .getProductApi(parameter)
+        .then((value) {
+      setRxRequestStatus(Status.COMPLETED);
+      setproductsList(value);
+    })
+        .onError((error, stackTrace) {
+      setError(error.toString());
+      setRxRequestStatus(Status.ERROR);
+    });
+  }
+
+  // New method to handle subcategory selection
+  Future<void> selectSubCategory(int subCategoryId) async {
+    selectedSubCategoryId.value = subCategoryId;
+    await getproductsApi();
+  }
+
+  // New method to clear subcategory selection
+  void clearSubCategorySelection() {
+    selectedSubCategoryId.value = null;
+    productsCatlog_List.value = [];
   }
 
   Future<void> getResInfoApitApi() async {
     await _api
         .getResInfoApi()
         .then((value) {
-          setRxRequestStatus(Status.COMPLETED);
-          setResInfoList(value);
-        })
+      setRxRequestStatus(Status.COMPLETED);
+      setResInfoList(value);
+    })
         .onError((error, stackTrace) {
-          setError(error.toString());
-          setRxRequestStatus(Status.ERROR);
-        });
+      setError(error.toString());
+      setRxRequestStatus(Status.ERROR);
+    });
   }
 
   Future<void> refreshApi() async {
     setRxRequestStatus(Status.LOADING);
-    await getproductsApi();
+    if (selectedSubCategoryId.value != null) {
+      await getproductsApi();
+    } else {
+      await getCategoryApi();
+    }
   }
 
   void addToCart(ProductCartModel product) {
-    // Check if the product already exists in the cart
     bool exists = ListItemCard.getItems().any((item) => item.productsId == product.productsId);
-    
+
     if (exists) {
-     ListItemCard.updateItemCount(product.productsId);
-        // Assuming 'count' is a property of ProductsModel
+      ListItemCard.updateItemCount(product.productsId);
     } else {
-       ProductCartModel productCartModel = ProductCartModel(
+      ProductCartModel productCartModel = ProductCartModel(
         productsId: product.productsId,
         name: product.name,
         nameEn: product.nameEn,
@@ -133,13 +171,13 @@ class ProductsController extends GetxController {
         detailsEn: product.detailsEn,
         image: product.image,
         price: product.price,
-        timeProduct: product.timeProduct, // Add timeProduct here
-        count: 1, // Initialize count to 1 when adding a new item
+        timeProduct: product.timeProduct,
+        count: 1,
       );
-       ListItemCard.addItem(productCartModel);
+      ListItemCard.addItem(productCartModel);
     }
   }
-  
+
   void getListItemCard() {
     if (ListItemCard.getItems().isNotEmpty) {
       listItemCard_List.value = ListItemCard.getItems();
@@ -149,13 +187,11 @@ class ProductsController extends GetxController {
   }
 
   void removeFromCart(ProductCartModel product) {
-
-    // Check if the product exists in the cart
     bool exists = ListItemCard.getItems().any((item) => item.productsId == product.productsId);
     if (!exists) {
-      return; // Product not found in the cart, no action needed
+      return;
     }
-     ListItemCard.removeItem(product.productsId); 
+    ListItemCard.removeItem(product.productsId);
   }
 
   void clearCart() {
@@ -163,6 +199,6 @@ class ProductsController extends GetxController {
       listItemCard_List.value = [];
       ListItemCard.itemscard.clear();
       ListItemCard.storage.remove('itemscard');
-    } 
+    }
   }
 }

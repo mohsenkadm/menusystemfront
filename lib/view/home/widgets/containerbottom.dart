@@ -1,5 +1,3 @@
-
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,8 +24,7 @@ class containerbottom extends StatelessWidget {
         height: 220,
         width: screenWidth,
         decoration: BoxDecoration(
-          color: Color.fromARGB(230, 48, 48, 48),
-        
+          color: Colors.black.withOpacity(0.95),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(25),
             topRight: Radius.circular(25),
@@ -77,12 +74,12 @@ class containerbottom extends StatelessWidget {
                           fit: BoxFit.fitHeight,
                           width: 30,
                           height: 25,
-                          placeholder: (context, url) =>
-                              const Center(
+                          placeholder:
+                              (context, url) => const Center(
                                 child: CircularProgressIndicator(),
                               ),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
+                          errorWidget:
+                              (context, url, error) => const Icon(Icons.error),
                           imageUrl: ImageAssets.face,
                         ),
                       ),
@@ -103,12 +100,12 @@ class containerbottom extends StatelessWidget {
                           fit: BoxFit.fitHeight,
                           width: 30,
                           height: 25,
-                          placeholder: (context, url) =>
-                              const Center(
+                          placeholder:
+                              (context, url) => const Center(
                                 child: CircularProgressIndicator(),
                               ),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
+                          errorWidget:
+                              (context, url, error) => const Icon(Icons.error),
                           imageUrl: ImageAssets.insta,
                         ),
                       ),
@@ -129,12 +126,12 @@ class containerbottom extends StatelessWidget {
                           fit: BoxFit.fitHeight,
                           width: 30,
                           height: 25,
-                          placeholder: (context, url) =>
-                              const Center(
+                          placeholder:
+                              (context, url) => const Center(
                                 child: CircularProgressIndicator(),
                               ),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
+                          errorWidget:
+                              (context, url, error) => const Icon(Icons.error),
                           imageUrl: ImageAssets.whatsapp,
                         ),
                       ),
@@ -143,164 +140,78 @@ class containerbottom extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      // // Open map
-                      // final mapUrl = productsController
-                      //         .resInfoModeldata!
-                      //         .value
-                      //         ?.mapUrl ??
-                      //     "";
-                      // if (mapUrl.isNotEmpty) {
-                      //   Utils.launchURL(mapUrl);
-                      // }
-                    },
-                    child: CachedNetworkImage(
-                      fit: BoxFit.fitHeight,
-                      width: 30,
-                      height: 25,
-                      placeholder: (context, url) => const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                      imageUrl: ImageAssets.map,
-                    ),
+
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    // final mapUrl = productsController.resInfoModeldata!.value?.mapUrl ?? "";
+                    // if (mapUrl.isNotEmpty) {
+                    //   Utils.launchURL(mapUrl);
+                    // }
+                  },
+                  child: CachedNetworkImage(
+                    fit: BoxFit.fitHeight,
+                    width: 30,
+                    height: 25,
+                    placeholder: (context, url) =>
+                    const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                    imageUrl: ImageAssets.map,
                   ),
-                  const SizedBox(width: 5),
-                  Text(
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: AppColor.whiteColor,
-                    ),
+                ),
+                const SizedBox(width: 5),
+                // 🟢 Wrap the text in Expanded to allow wrapping
+                Expanded(
+                  child: Text(
                     isArabic
-                        ? productsController
-                                .resInfoModeldata!
-                                .value
-                                ?.address ??
-                            ""
-                        : productsController
-                                .resInfoModeldata!
-                                .value
-                                ?.addressEn ??
-                            "",
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          // Open phone dialer
-                          final phone = productsController
-                                  .resInfoModeldata!
-                                  .value
-                                  ?.phone1 ??
-                              "";
-                          // if (phone.isNotEmpty) {
-                          //   Utils.launchURL("tel:$phone");
-                          // }
-                        },
-                        child: CachedNetworkImage(
-                          fit: BoxFit.fitHeight,
-                          width: 30,
-                          height: 25,
-                          placeholder: (context, url) =>
-                              const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                          imageUrl: ImageAssets.call,
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: AppColor.whiteColor,
-                        ),
-                        productsController
-                                .resInfoModeldata!
-                                .value
-                                ?.phone1 ??
-                            "",
-                      ),
-                    ],
-                  ),
-                  const Text(
-                    '|',
-                    style: TextStyle(
+                        ? productsController.resInfoModeldata!.value?.address ?? ""
+                        : productsController.resInfoModeldata!.value?.addressEn ?? "",
+                    style: const TextStyle(
+                      fontSize: 12,
                       color: AppColor.whiteColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
                     ),
+                    softWrap: true,
+                    overflow: TextOverflow.visible,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          // Open WiFi settings or related action
-                          // Utils.snackBar("WiFi action not implemented");
-                        },
-                        child: CachedNetworkImage(
-                          fit: BoxFit.fitHeight,
-                          width: 30,
-                          height: 25,
-                          placeholder: (context, url) =>
-                              const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                          imageUrl: ImageAssets.wifi,
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: AppColor.whiteColor,
-                        ),
-                        productsController
-                                .resInfoModeldata!
-                                .value
-                                ?.phone1 ??
-                            "",
-                      ),
-                    ],
-                  ),
-                  
-                ],
-              ),
+                ),
+              ],
             ),
-            
-            const SizedBox(height: 20),
-            CachedNetworkImage(
-                          fit: BoxFit.fitHeight,
-                          height: 25,
-                          placeholder: (context, url) =>
-                              const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                          imageUrl: ImageAssets.codeq,
-                        ),
+
+            SizedBox(height: 5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    // Open WiFi settings or related action
+                    // Utils.snackBar("WiFi action not implemented");
+                  },
+                  child: CachedNetworkImage(
+                    fit: BoxFit.fitHeight,
+                    width: 30,
+                    height: 25,
+                    placeholder:
+                        (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                    errorWidget:
+                        (context, url, error) => const Icon(Icons.error),
+                    imageUrl: ImageAssets.call,
+                  ),
+                ),
+                const SizedBox(width: 5),
+                Text(
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColor.whiteColor,
+                  ),
+                  productsController.resInfoModeldata!.value?.phone1 ?? "",
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 30),
+            CachedNetworkImage(height: 20, imageUrl: ImageAssets.codeq),
           ],
         ),
       ),
