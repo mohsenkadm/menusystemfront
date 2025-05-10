@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:menusystemfront/data/response/status.dart';
 import 'package:menusystemfront/models/products/subCatecory_model.dart';
 import 'package:menusystemfront/res/colors/app_color.dart';
@@ -27,7 +26,7 @@ class _homepageState extends State<homeview> {
   @override
   void initState() {
     super.initState();
-    productsController.getSubCategoryApi(categoryid: 1);
+    productsController.getSubCategoryApi();
     productsController.getCategoryApi();
   }
 

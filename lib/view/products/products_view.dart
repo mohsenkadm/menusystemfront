@@ -15,6 +15,7 @@ import 'package:menusystemfront/view/home/widgets/FillProductData.dart';
 import 'package:menusystemfront/view/home/widgets/containerbottom.dart';
 import 'package:menusystemfront/view/navbar/widget/Dialogfilter.dart';
 import 'package:menusystemfront/view_model/controller/products/product_view_model.dart';
+import 'package:show_network_image/show_network_image.dart';
 
 class ProductsView extends StatefulWidget {
   const ProductsView({Key? key}) : super(key: key);
@@ -59,6 +60,7 @@ class _ProductsCatalogState extends State<ProductsView> {
                 height: double.infinity,
                 decoration: BoxDecoration(
                   image: DecorationImage(
+                    
                     image: NetworkImage(backgroundImage),
                     fit: BoxFit.cover,
                   ),
@@ -77,6 +79,7 @@ class _ProductsCatalogState extends State<ProductsView> {
               physics: const AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
+                //  _buildCategorySection(status, isArabic),
                   SizedBox(height: 100,),
                   _buildProductSection(status, isArabic, products),
                   SizedBox(height: 40,),
@@ -185,7 +188,14 @@ class _ProductsCatalogState extends State<ProductsView> {
 
     return AppBar(
       backgroundColor: Colors.transparent,
-      actions: [
+      actions: [ IconButton(
+          onPressed: () {
+            Get.toNamed(RouteName.navbar);
+          },
+          icon: const Icon(Icons.home, color: AppColor.whiteColor, size: 30),
+        ),
+
+        const SizedBox(width: 10),
         GestureDetector(
           onTap: () {
             final currentLocale = Get.locale?.languageCode;
@@ -204,7 +214,7 @@ class _ProductsCatalogState extends State<ProductsView> {
             imageUrl: ImageAssets.imagetranslate,
           ),
         ),
-        const SizedBox(width: 20),
+        const SizedBox(width: 10),
         GestureDetector(
           onTap: () {
             Get.toNamed(RouteName.productscartView);
@@ -220,7 +230,7 @@ class _ProductsCatalogState extends State<ProductsView> {
             imageUrl: ImageAssets.shoppingcard,
           ),
         ),
-        const SizedBox(width: 20),
+        const SizedBox(width: 10),
         GestureDetector(
           onTap: () => Dialogfilter(isArabic, pricename, timeName),
           child: CachedNetworkImage(
@@ -232,7 +242,7 @@ class _ProductsCatalogState extends State<ProductsView> {
             imageUrl: ImageAssets.imageFilter,
           ),
         ),
-        const SizedBox(width: 20),
+        const SizedBox(width: 10),
       ],
       leading: Obx(() => productsController.resInfoModeldata?.value == null
           ? const SizedBox()
@@ -240,12 +250,20 @@ class _ProductsCatalogState extends State<ProductsView> {
               padding: const EdgeInsets.only(top: 10, left: 10),
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(5)),
-                child: CachedNetworkImage(
-                  fit: BoxFit.fitWidth,
-                  placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                  imageUrl: productsController.resInfoModeldata!.value!.logo.toString(),
-                ),
+                child: 
+                ShowNetworkImage(
+                      imageSrc:
+                          productsController.resInfoModeldata!.value!.logo
+                              .toString() ??
+                          '',
+                      mobileBoxFit: BoxFit.fitWidth,
+                    ),
+                // CachedNetworkImage(
+                //   fit: BoxFit.fitWidth,
+                //   placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                //   errorWidget: (context, url, error) => const Icon(Icons.error),
+                //   imageUrl: productsController.resInfoModeldata!.value!.logo.toString(),
+                // ),
               ),
             )),
       elevation: 0,

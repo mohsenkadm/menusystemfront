@@ -1,13 +1,13 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
- import 'package:menusystemfront/res/assets/image_assets.dart';
+import 'package:menusystemfront/res/assets/image_assets.dart';
 import 'package:menusystemfront/res/colors/app_color.dart';
 import 'package:menusystemfront/res/routes/routes_name.dart';
 import 'package:menusystemfront/view/home/home_view.dart';
 import 'package:menusystemfront/view/navbar/widget/Dialogfilter.dart';
 import 'package:menusystemfront/view_model/controller/products/product_view_model.dart';
+import 'package:show_network_image/show_network_image.dart';
 
 class navbar extends StatefulWidget {
   const navbar({Key? key}) : super(key: key);
@@ -18,12 +18,10 @@ class navbar extends StatefulWidget {
 
 class _navbarState extends State<navbar> {
   final productsController = Get.find<ProductsController>();
-  final ScrollController _scrollController =
-      ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
-     
     productsController.getResInfoApitApi();
     super.initState();
   }
@@ -45,8 +43,9 @@ class _navbarState extends State<navbar> {
             child: FloatingActionButton(
               backgroundColor: AppColor.whiteColor,
               onPressed: () {
-                _scrollController.animateTo(0,
-                  duration: const Duration(milliseconds: 500,),
+                _scrollController.animateTo(
+                  0,
+                  duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInOut,
                 );
               },
@@ -71,15 +70,13 @@ class _navbarState extends State<navbar> {
                 ),
               ),
             ),
-            
+
             Container(
               width: double.infinity,
               height: double.infinity,
               color: Colors.black.withOpacity(0.8), // 10% black overlay
             ),
-            homeview(
-              scrollController: _scrollController,
-            ),
+            homeview(scrollController: _scrollController),
           ],
         ),
       ),
@@ -87,12 +84,9 @@ class _navbarState extends State<navbar> {
   }
 
   AppBar my_app_bar() {
-    final isArabic =
-        Get.locale?.languageCode == 'ar';
-    final pricename =
-        isArabic ? 'دينار' : 'IQD';
-    final timeName =
-        isArabic ? 'دقيقة' : 'Min';
+    final isArabic = Get.locale?.languageCode == 'ar';
+    final pricename = isArabic ? 'دينار' : 'IQD';
+    final timeName = isArabic ? 'دقيقة' : 'Min';
 
     return AppBar(
       backgroundColor: Colors.transparent, // Makes AppBar transparent
@@ -161,18 +155,25 @@ class _navbarState extends State<navbar> {
                   padding: const EdgeInsets.only(top: 10, left: 10),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(5)),
-                    child: CachedNetworkImage(
-                      fit: BoxFit.fitWidth,
-                      placeholder:
-                          (context, url) =>
-                              const Center(child: CircularProgressIndicator()),
-                      errorWidget:
-                          (context, url, error) => const Icon(Icons.error),
-                      imageUrl:
+                    child: ShowNetworkImage(
+                      imageSrc:
                           productsController.resInfoModeldata!.value!.logo
                               .toString() ??
-                          "",
+                          '',
+                      mobileBoxFit: BoxFit.fitWidth,
                     ),
+                    //  CachedNetworkImage(
+                    //   fit: BoxFit.fitWidth,
+                    //   placeholder:
+                    //       (context, url) =>
+                    //           const Center(child: CircularProgressIndicator()),
+                    //   errorWidget:
+                    //       (context, url, error) => const Icon(Icons.error),
+                    //   imageUrl:
+                    //       productsController.resInfoModeldata!.value!.logo
+                    //           .toString() ??
+                    //       "",
+                    // ),
                   ),
                 ),
       ),

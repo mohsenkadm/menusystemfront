@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart'; // Import GetStorage
- import 'package:menusystemfront/res/colors/app_color.dart';
+import 'package:menusystemfront/res/colors/app_color.dart';
 import 'package:menusystemfront/res/dependencyinjection/dependency_injection.dart';
 import 'package:menusystemfront/res/getx_loclization/languages.dart';
 import 'package:menusystemfront/res/routes/routes.dart';

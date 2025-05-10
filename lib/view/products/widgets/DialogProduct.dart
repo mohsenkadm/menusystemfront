@@ -6,6 +6,7 @@ import 'package:menusystemfront/models/products/product_model.dart';
 import 'package:menusystemfront/res/assets/image_assets.dart';
 import 'package:menusystemfront/res/colors/app_color.dart';
 import 'package:menusystemfront/view_model/controller/products/product_view_model.dart';
+import 'package:show_network_image/show_network_image.dart';
 
 Future<dynamic> DialogProduct(
   ProductsController productsController,
@@ -40,15 +41,19 @@ Future<dynamic> DialogProduct(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: IconButton(
-                          icon: const Icon(Icons.close, color: AppColor.whiteColor),
+                          icon: const Icon(
+                            Icons.close,
+                            color: AppColor.whiteColor,
+                          ),
                           onPressed: () {
-                            Navigator.of(context).pop(); // Close the dialog
+                            Navigator.of(context).pop();
                           },
                         ),
                       ),
                     ),
                     const SizedBox(height: 10),
 
+                    // Product Image with ShowNetworkImage
                     SizedBox(
                       height: 230,
                       child: Stack(
@@ -60,7 +65,6 @@ Future<dynamic> DialogProduct(
                               horizontal: 10,
                               vertical: 10,
                             ),
-                            padding: const EdgeInsets.all(0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(40),
                               boxShadow: [
@@ -70,30 +74,51 @@ Future<dynamic> DialogProduct(
                                   offset: const Offset(0, 3),
                                 ),
                               ],
-                              // image: DecorationImage(
-                              //   image: CachedNetworkImageProvider(
-                              //     prodModel.image ?? "",
-                              //   ),
-                              //   fit: BoxFit.cover,
-                              // ),
-                              image: DecorationImage(
-                                image: CachedNetworkImageProvider("https://codeqserver-001-site1.qtempurl.com/Uplouds/image-c9f1bbd9-21f8-45af-828c-ad8209590e28.png"),
-                                fit: BoxFit.cover,
-                              )),
-                            child: Center(
-                              child: Text(
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  wordSpacing: 2,
-                                  color: Colors.white,
-                                ),
-                                isArabic
-                                    ? prodModel.name.toString()
-                                    : prodModel.nameEn.toString(),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(40),
+                              child: ShowNetworkImage(
+                                imageSrc: prodModel.image ?? "",
+                                mobileBoxFit: BoxFit.cover,
                               ),
                             ),
                           ),
+
+                          // Product Name Overlay
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 10,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.2),
+                                      blurRadius: 15,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: Text(
+                                  isArabic
+                                      ? prodModel.name.toString()
+                                      : prodModel.nameEn.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    wordSpacing: 2,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          // Price Tag
                           Positioned(
                             bottom: 0,
                             left: 45,
@@ -102,20 +127,27 @@ Future<dynamic> DialogProduct(
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 3,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
                               ),
                               child: Text(
+                                '${prodModel.price!.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')} $pricename',
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                   color: AppColor.blackColor,
                                 ),
-                                '${prodModel.price!.toStringAsFixed(0).replaceAllMapped(
-                                    RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')} '
-                                    '$pricename',
                                 textAlign: TextAlign.center,
                               ),
                             ),
                           ),
+
+                          // Time Tag
                           Positioned(
                             bottom: 0,
                             right: 45,
@@ -124,14 +156,21 @@ Future<dynamic> DialogProduct(
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 3,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
                               ),
                               child: Text(
+                                '${prodModel.timeProduct} $timeName',
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: AppColor.blackColor,
                                 ),
-                                '${prodModel.timeProduct} $timeName',
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -146,24 +185,26 @@ Future<dynamic> DialogProduct(
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
+                          isArabic
+                              ? '${prodModel.details}'
+                              : '${prodModel.detailsEn}',
                           style: const TextStyle(
                             fontSize: 14,
                             color: AppColor.whiteColor,
                           ),
-                          isArabic
-                              ? '${prodModel.details}'
-                              : '${prodModel.detailsEn}',
                           textAlign: TextAlign.center,
                           maxLines: 5,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
-                    // Add to cart button
+
+                    // Add/Remove buttons
                     const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        // Delete Button
                         Container(
                           decoration: BoxDecoration(
                             color: AppColor.whiteColor,
@@ -176,22 +217,32 @@ Future<dynamic> DialogProduct(
                               ),
                             ],
                           ),
-                          child: IconButton(onPressed: (){
-                              ProductCartModel productCartModel = ProductCartModel(
-                                productsId: prodModel.productsId,
-                                name: prodModel.name,
-                                nameEn: prodModel.nameEn,
-                                details: prodModel.details,
-                                detailsEn: prodModel.detailsEn,
-                                image: prodModel.image,
-                                price: prodModel.price,
-                                timeProduct: prodModel.timeProduct,
+                          child: IconButton(
+                            onPressed: () {
+                              ProductCartModel productCartModel =
+                                  ProductCartModel(
+                                    productsId: prodModel.productsId,
+                                    name: prodModel.name,
+                                    nameEn: prodModel.nameEn,
+                                    details: prodModel.details,
+                                    detailsEn: prodModel.detailsEn,
+                                    image: prodModel.image,
+                                    price: prodModel.price,
+                                    timeProduct: prodModel.timeProduct,
+                                  );
+                              productsController.removeFromCart(
+                                productCartModel,
                               );
-                              productsController.removeFromCart(productCartModel);
-                          }, icon: Icon(Icons.delete,
-                           color: AppColor.blackColor, size: 30,)),
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                              color: AppColor.blackColor,
+                              size: 30,
+                            ),
+                          ),
                         ),
                         const SizedBox(width: 20),
+                        // Add Button
                         Container(
                           decoration: BoxDecoration(
                             color: AppColor.whiteColor,
@@ -204,20 +255,27 @@ Future<dynamic> DialogProduct(
                               ),
                             ],
                           ),
-                          child: IconButton(onPressed: (){
-                            ProductCartModel productCartModel = ProductCartModel(
-                                productsId: prodModel.productsId,
-                                name: prodModel.name,
-                                nameEn: prodModel.nameEn,
-                                details: prodModel.details,
-                                detailsEn: prodModel.detailsEn,
-                                image: prodModel.image,
-                                price: prodModel.price,
-                                timeProduct: prodModel.timeProduct,
-                              );
+                          child: IconButton(
+                            onPressed: () {
+                              ProductCartModel productCartModel =
+                                  ProductCartModel(
+                                    productsId: prodModel.productsId,
+                                    name: prodModel.name,
+                                    nameEn: prodModel.nameEn,
+                                    details: prodModel.details,
+                                    detailsEn: prodModel.detailsEn,
+                                    image: prodModel.image,
+                                    price: prodModel.price,
+                                    timeProduct: prodModel.timeProduct,
+                                  );
                               productsController.addToCart(productCartModel);
-                          }, icon: Icon(Icons.add,
-                           color: AppColor.blackColor, size: 30,)),
+                            },
+                            icon: Icon(
+                              Icons.add,
+                              color: AppColor.blackColor,
+                              size: 30,
+                            ),
+                          ),
                         ),
                       ],
                     ),
