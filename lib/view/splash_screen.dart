@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:menusystemfront/res/assets/image_assets.dart';
 import 'package:menusystemfront/view_model/services/SplashServices.dart';
 
 
@@ -28,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(child:
       Padding(
         padding: const EdgeInsets.all(25),
-        child: null//Image.asset(ImageAssets.logolong),
+        child: null
       )),
     );
   }

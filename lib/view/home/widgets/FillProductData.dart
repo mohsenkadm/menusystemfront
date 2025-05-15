@@ -73,8 +73,7 @@ Widget build(BuildContext context) {
                 child: Text(
                   isArabic ? prodModel.name.toString() : prodModel.nameEn.toString(),
                   style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
                     wordSpacing: 2,
                     color: Colors.white,
                   ),

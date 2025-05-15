@@ -69,7 +69,7 @@ Widget build(BuildContext context) {
                     ? subcategoryModel.subCategoryName.toString()
                     : subcategoryModel.subCategoryNameEn.toString(),
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 30,
                   fontWeight: FontWeight.bold,
                   wordSpacing: 2,
                   color: Colors.white,

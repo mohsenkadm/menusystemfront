@@ -32,7 +32,7 @@ class NameRestourant extends StatelessWidget {
             ),
             Text(
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 14,
                 fontWeight: FontWeight.normal,
                 color: AppColor.whiteColor,
               ),

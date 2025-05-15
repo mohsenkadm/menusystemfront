@@ -25,7 +25,7 @@ class FillCategoryData extends StatefulWidget {
 }
 
 class _FillCategoryDataState extends State<FillCategoryData> {
-  int _selectedIndex = 1; // Start from the second category (index 1)
+  int _selectedIndex = 1;
   late final PageController _pageController;
 
   @override
@@ -41,7 +41,6 @@ class _FillCategoryDataState extends State<FillCategoryData> {
       if (mounted) setState(() {});
     });
 
-    // Load data for the second category initially
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.productsController.category_List.length > 1) {
         final categoryId =
@@ -160,7 +159,7 @@ class _FillCategoryDataState extends State<FillCategoryData> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: AppColor.whiteColor,
                         ),

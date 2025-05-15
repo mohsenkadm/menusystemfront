@@ -48,24 +48,23 @@ class _ProductsCatalogState extends State<ProductsView> {
       extendBodyBehindAppBar: true,
       appBar: _buildAppBar(isArabic),
       body: Obx(() {
+
         final status = productsController.rxRequestStatus.value;
         final backgroundImage = productsController.resInfoModeldata?.value?.background;
         final products = productsController.productsCatlog_List.value;
-
         return Stack(
           children: [
             if (backgroundImage != null && backgroundImage.isNotEmpty)
-              Container(
+              SizedBox(
                 width: double.infinity,
                 height: double.infinity,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    
-                    image: NetworkImage(backgroundImage),
-                    fit: BoxFit.cover,
-                  ),
+                child: ShowNetworkImage(
+
+                  imageSrc: backgroundImage,
+                  mobileBoxFit: BoxFit.cover,
                 ),
               ),
+
 
             // Overlay
             Container(
@@ -79,10 +78,9 @@ class _ProductsCatalogState extends State<ProductsView> {
               physics: const AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
-                //  _buildCategorySection(status, isArabic),
                   SizedBox(height: 100,),
                   _buildProductSection(status, isArabic, products),
-                  SizedBox(height: 40,),
+                  SizedBox(height: 40),
                   containerbottom(
                     screenWidth: MediaQuery.of(context).size.width,
                     isArabic: isArabic,

@@ -1,51 +1,85 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:menusystemfront/models/products/product_cart_model.dart';
- 
-class ListItemCard extends GetxService {
-  static List<ProductCartModel> itemscard = [];
-  static final GetStorage storage = GetStorage();
 
-  // Add a method to add items to the list
+class ListItemCard {
+  static final GetStorage _storage = GetStorage();
+  static List<ProductCartModel> _items = [];
+
+  // Initialize storage
+  static Future<void> init() async {
+    await _storage.initStorage;
+    _loadItems();
+  }
+
+  // Private method to load items
+  static void _loadItems() {
+    try {
+      final storedData = _storage.read<List<dynamic>>('itemscard');
+      if (storedData != null) {
+        _items = storedData.map((e) => ProductCartModel.fromJson(e)).toList();
+      }
+    } catch (e) {
+      Get.log('Error loading cart items: $e');
+      _items = [];
+    }
+  }
+
+  // Private method to save items
+  static void _saveItems() {
+    try {
+      _storage.write('itemscard', _items.map((item) => item.toJson()).toList());
+    } catch (e) {
+      Get.log('Error saving cart items: $e');
+    }
+  }
+
+  // Public methods
+  static List<ProductCartModel> getItems() => List.from(_items);
+
   static void addItem(ProductCartModel product) {
-    product.count = 1; // Initialize count to 1 when adding a new item
-    itemscard.add(product);
-    _saveToStorage();
-  }
+    final index = _items.indexWhere((item) => item.productsId == product.productsId);
 
-  // Add a method to remove items from the list
-  static void removeItem(int productId) {
-    itemscard = getItems();
-    final product = itemscard.firstWhere((item) => item.productsId == productId);
-    
-    itemscard.remove(product);
-    _saveToStorage();
-  }
-
-  // Add a method to retrieve the list
-  static List<ProductCartModel> getItems() {
-    final storedData = storage.read<List<dynamic>>('itemscard');
-    if (storedData != null) {
-      itemscard = storedData.map((e) => ProductCartModel.fromJson(e)).toList();
-    }
-    return itemscard;
-  }
-
-  // Add a method to update the count of an item
-  static void updateItemCount(int productId) {
-    itemscard = getItems();
-    final index = itemscard.indexWhere((item) => item.productsId == productId);
     if (index != -1) {
-      itemscard[index].count=(itemscard[index].count!+1);
-      _saveToStorage();
+      _items[index].count = (_items[index].count ?? 0) + 1;
+    } else {
+      _items.add(ProductCartModel(
+        productsId: product.productsId,
+        name: product.name,
+        nameEn: product.nameEn,
+        details: product.details,
+        detailsEn: product.detailsEn,
+        image: product.image,
+        price: product.price,
+        timeProduct: product.timeProduct,
+        count: 1,
+      ));
+    }
+    _saveItems();
+  }
+
+  static void removeItem(int productId) {
+    final index = _items.indexWhere((item) => item.productsId == productId);
+    if (index != -1) {
+      if (_items[index].count! > 1) {
+        _items[index].count = _items[index].count! - 1;
+      } else {
+        _items.removeAt(index);
+      }
+      _saveItems();
     }
   }
 
-  // Helper method to save the list to GetStorage
-  static void _saveToStorage() {
-     
-      // Save the current list if no existing data
-      storage.write('itemscard', itemscard.map((item) => item.toJson()).toList());
-    
+  static void updateItemCount(int productId) {
+    final index = _items.indexWhere((item) => item.productsId == productId);
+    if (index != -1) {
+      _items[index].count = (_items[index].count ?? 0) + 1;
+      _saveItems();
+    }
+  }
+
+  static void clearCart() {
+    _items.clear();
+    _storage.remove('itemscard');
   }
 }

@@ -1,10 +1,9 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:menusystemfront/res/colors/app_color.dart';
+import 'package:url_launcher/url_launcher.dart';
 class Utils {
 
 
@@ -13,7 +12,14 @@ class Utils {
       FocusScope.of(context).requestFocus(nextFocus);
     }
 
-
+    static Future<void> launchURL(String url) async {
+      final uri = Uri.tryParse(url);
+      if (uri != null && await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        Utils.toastMessage("Could not launch URL");
+      }
+    }
     static toastMessage(String message){
       Fluttertoast.showToast(
           msg: message ,
@@ -21,8 +27,6 @@ class Utils {
         textColor: AppColor.whiteColor,
         gravity: ToastGravity.BOTTOM,
         toastLength: Toast.LENGTH_LONG,
-
-
       );
     }
 

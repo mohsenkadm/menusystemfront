@@ -28,57 +28,60 @@ class _navbarState extends State<navbar> {
 
   @override
   void dispose() {
-    _scrollController.dispose(); // Dispose the ScrollController
+    _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Scaffold(
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 50),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(40)),
-            child: FloatingActionButton(
-              backgroundColor: AppColor.whiteColor,
-              onPressed: () {
-                _scrollController.animateTo(
-                  0,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,
-                );
-              },
-              child: const Icon(Icons.keyboard_arrow_up),
-            ),
+    return Scaffold(
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 50),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(40)),
+          child: FloatingActionButton(
+            backgroundColor: AppColor.whiteColor,
+            onPressed: () {
+              _scrollController.animateTo(
+                0,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+              );
+            },
+            child: const Icon(Icons.keyboard_arrow_up),
           ),
         ),
-        extendBodyBehindAppBar: true,
-        appBar: my_app_bar(),
-        body: Stack(
-          children: [
-            Container(
-              width: double.infinity,
-              height: double.infinity,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                    productsController.resInfoModeldata?.value?.background ??
-                        "",
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
+      ),
+      extendBodyBehindAppBar: true,
+      appBar: my_app_bar(),
+      body: Stack(
+        children: [
+          // Background image with Obx
+          Obx(() {
+            final backgroundImage =
+                productsController.resInfoModeldata!.value?.background ?? '';
+            if (backgroundImage.isEmpty) return const SizedBox();
 
-            Container(
+            return SizedBox(
               width: double.infinity,
               height: double.infinity,
-              color: Colors.black.withOpacity(0.8), // 10% black overlay
-            ),
-            homeview(scrollController: _scrollController),
-          ],
-        ),
+              child: ShowNetworkImage(
+                imageSrc: backgroundImage,
+                mobileBoxFit: BoxFit.cover,
+              ),
+            );
+          }),
+
+          // Dark overlay
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: Colors.black.withOpacity(0.8),
+          ),
+
+          // Home content
+          homeview(scrollController: _scrollController),
+        ],
       ),
     );
   }
@@ -89,25 +92,22 @@ class _navbarState extends State<navbar> {
     final timeName = isArabic ? 'دقيقة' : 'Min';
 
     return AppBar(
-      backgroundColor: Colors.transparent, // Makes AppBar transparent
+      backgroundColor: Colors.transparent,
       actions: [
         GestureDetector(
           onTap: () {
-            // Toggle between Arabic and English
             final currentLocale = Get.locale?.languageCode;
             if (currentLocale == 'ar') {
-              Get.updateLocale(const Locale('en')); // Switch to English
+              Get.updateLocale(const Locale('en'));
             } else {
-              Get.updateLocale(const Locale('ar')); // Switch to Arabic
+              Get.updateLocale(const Locale('ar'));
             }
           },
           child: CachedNetworkImage(
             fit: BoxFit.fitHeight,
             width: 50,
             height: 30,
-            placeholder:
-                (context, url) =>
-                    const Center(child: CircularProgressIndicator()),
+            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
             errorWidget: (context, url, error) => const Icon(Icons.error),
             imageUrl: ImageAssets.imagetranslate,
           ),
@@ -121,9 +121,7 @@ class _navbarState extends State<navbar> {
             fit: BoxFit.fitHeight,
             width: 50,
             height: 25,
-            placeholder:
-                (context, url) =>
-                    const Center(child: CircularProgressIndicator()),
+            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
             errorWidget: (context, url, error) => const Icon(Icons.error),
             imageUrl: ImageAssets.shoppingcard,
           ),
@@ -131,52 +129,34 @@ class _navbarState extends State<navbar> {
         const SizedBox(width: 20),
         GestureDetector(
           onTap: () {
-            // Show dialog with price range
             Dialogfilter(isArabic, pricename, timeName);
           },
           child: CachedNetworkImage(
             fit: BoxFit.fitHeight,
             width: 50,
             height: 25,
-            placeholder:
-                (context, url) =>
-                    const Center(child: CircularProgressIndicator()),
+            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
             errorWidget: (context, url, error) => const Icon(Icons.error),
             imageUrl: ImageAssets.imageFilter,
           ),
         ),
         const SizedBox(width: 20),
       ],
-      leading: Obx(
-        () =>
-            productsController.resInfoModeldata!.value == null
-                ? SizedBox()
-                : Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 10),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(5)),
-                    child: ShowNetworkImage(
-                      imageSrc:
-                          productsController.resInfoModeldata!.value!.logo
-                              .toString() ??
-                          '',
-                      mobileBoxFit: BoxFit.fitWidth,
-                    ),
-                    //  CachedNetworkImage(
-                    //   fit: BoxFit.fitWidth,
-                    //   placeholder:
-                    //       (context, url) =>
-                    //           const Center(child: CircularProgressIndicator()),
-                    //   errorWidget:
-                    //       (context, url, error) => const Icon(Icons.error),
-                    //   imageUrl:
-                    //       productsController.resInfoModeldata!.value!.logo
-                    //           .toString() ??
-                    //       "",
-                    // ),
-                  ),
-                ),
-      ),
+      leading: Obx(() {
+        final logo = productsController.resInfoModeldata?.value?.logo ?? '';
+        if (logo.isEmpty) return const SizedBox();
+
+        return Padding(
+          padding: const EdgeInsets.only(top: 10, left: 10),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
+            child: ShowNetworkImage(
+              imageSrc: logo,
+              mobileBoxFit: BoxFit.fitWidth,
+            ),
+          ),
+        );
+      }),
       elevation: 0,
     );
   }

@@ -12,7 +12,7 @@ import 'package:menusystemfront/view/home/widgets/NameRestourant.dart';
 import 'package:menusystemfront/view/home/widgets/containerbottom.dart';
 import 'package:menusystemfront/view_model/controller/products/product_view_model.dart';
 import 'package:intl/intl.dart';
-import 'package:show_network_image/show_network_image.dart'; // Add this import for number formatting
+import 'package:show_network_image/show_network_image.dart';
 
 class ProductsCartView extends StatefulWidget {
   const ProductsCartView({Key? key}) : super(key: key);
@@ -51,17 +51,21 @@ class _ProductsCartState extends State<ProductsCartView> {
         return Stack(
           children: [
             // Background Image
-            if (backgroundImage != null && backgroundImage.isNotEmpty)
-              Container(
+            Obx(() {
+              final backgroundImage =
+                  productsController.resInfoModeldata!.value?.background ?? '';
+              if (backgroundImage.isEmpty) return const SizedBox();
+
+              return SizedBox(
                 width: double.infinity,
                 height: double.infinity,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(backgroundImage),
-                    fit: BoxFit.cover,
-                  ),
+                child: ShowNetworkImage(
+                  imageSrc: backgroundImage,
+                  mobileBoxFit: BoxFit.cover,
                 ),
-              ),
+              );
+            }),
+
 
             // Overlay
             Container(
@@ -79,7 +83,7 @@ class _ProductsCartState extends State<ProductsCartView> {
                   productsController.listItemCard_List.length > 0
                       ? _buildProductSection(status, isArabic)
                       : SizedBox(
-                        height: 200,
+                        height: 500,
                         child: Center(
                           child: Lottie.asset(
                             LottieAssets.nofounddata,
@@ -105,12 +109,12 @@ class _ProductsCartState extends State<ProductsCartView> {
 
   Widget _buildProductSection(Status status, bool isArabic) {
     final pricename =
-        isArabic ? 'دينار' : 'IQD'; // Set price name based on language
+        isArabic ? 'دينار' : 'IQD';
     final timeName =
-        isArabic ? 'دقيقة' : 'Min'; // Set time name based on language
+        isArabic ? 'دقيقة' : 'Min';
 
     List<dynamic> products =
-        productsController.listItemCard_List.value; // Updated reference
+        productsController.listItemCard_List.value;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -143,9 +147,9 @@ class _ProductsCartState extends State<ProductsCartView> {
         vertical: 5,
         horizontal: 10,
       ),
-      padding: const EdgeInsets.all(0),
       decoration: BoxDecoration(
-        border: Border.all(color: AppColor.whiteColor, width: 1),
+        color: Colors.black,
+        border: Border.all(color: AppColor.blackColor, width: 0.2),
         borderRadius: BorderRadius.circular(35),
       ),
       child: Row(
@@ -153,7 +157,7 @@ class _ProductsCartState extends State<ProductsCartView> {
           // Left: Product Image with ShowNetworkImage
           Container(
             width: 150,
-            height: 150,
+            height: 170,
             decoration: BoxDecoration(
               borderRadius: isArabic
                   ? const BorderRadius.only(
@@ -265,6 +269,7 @@ class _ProductsCartState extends State<ProductsCartView> {
                         onPressed: () {
                           productsController.removeFromCart(product);
                           productsController.getListItemCard();
+                          productsController.update();
                         },
                         icon: const Icon(
                           Icons.delete,
@@ -321,6 +326,7 @@ class _ProductsCartState extends State<ProductsCartView> {
                         onPressed: () {
                           productsController.addToCart(product);
                           productsController.getListItemCard();
+                          productsController.update();
                         },
                         icon: const Icon(
                           Icons.add,

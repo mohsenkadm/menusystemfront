@@ -158,47 +158,33 @@ class ProductsController extends GetxController {
   }
 
   void addToCart(ProductCartModel product) {
-    bool exists = ListItemCard.getItems().any((item) => item.productsId == product.productsId);
-
-    if (exists) {
-      ListItemCard.updateItemCount(product.productsId);
-    } else {
-      ProductCartModel productCartModel = ProductCartModel(
-        productsId: product.productsId,
-        name: product.name,
-        nameEn: product.nameEn,
-        details: product.details,
-        detailsEn: product.detailsEn,
-        image: product.image,
-        price: product.price,
-        timeProduct: product.timeProduct,
-        count: 1,
-      );
-      ListItemCard.addItem(productCartModel);
-    }
+    ListItemCard.addItem(product);
+    _refreshCartList();
+    update();
   }
-
-  void getListItemCard() {
-    if (ListItemCard.getItems().isNotEmpty) {
-      listItemCard_List.value = ListItemCard.getItems();
-    } else {
-      listItemCard_List.value = [];
-    }
+  int getProductCount(dynamic productId) {
+    return listItemCard_List.where((item) =>
+    item.productsId.toString() == productId.toString()
+    ).length;
   }
 
   void removeFromCart(ProductCartModel product) {
-    bool exists = ListItemCard.getItems().any((item) => item.productsId == product.productsId);
-    if (!exists) {
-      return;
-    }
     ListItemCard.removeItem(product.productsId);
+    _refreshCartList();
+    update();
+  }
+
+  void getListItemCard() {
+    _refreshCartList();
   }
 
   void clearCart() {
-    if (ListItemCard.getItems().isNotEmpty) {
-      listItemCard_List.value = [];
-      ListItemCard.itemscard.clear();
-      ListItemCard.storage.remove('itemscard');
-    }
+    ListItemCard.clearCart();
+    _refreshCartList();
+  }
+
+  void _refreshCartList() {
+    listItemCard_List.value = ListItemCard.getItems();
+    listItemCard_List.refresh();
   }
 }

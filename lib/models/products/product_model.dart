@@ -7,7 +7,7 @@ class ProductsModel {
   final String? image; 
   final double price;
   final int? count;
-  final int? timeProduct; // Restore the timeProduct field
+  final int? timeProduct;
   
   ProductsModel({
     required this.productsId,
@@ -18,7 +18,7 @@ class ProductsModel {
     this.detailsEn,
     this.image,
     this.count=1,
-    this.timeProduct, // Add timeProduct to the constructor
+    this.timeProduct,
   });
 
   // Convert a ProductsModel instance to a JSON map
@@ -32,7 +32,7 @@ class ProductsModel {
       'image': image,
       'price': price, 
       'count': count,
-      'timeProduct': timeProduct, // Serialize timeProduct
+      'timeProduct': timeProduct,
     };
   }
 
