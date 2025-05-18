@@ -48,7 +48,6 @@ class _ProductsCatalogState extends State<ProductsView> {
       extendBodyBehindAppBar: true,
       appBar: _buildAppBar(isArabic),
       body: Obx(() {
-
         final status = productsController.rxRequestStatus.value;
         final backgroundImage = productsController.resInfoModeldata?.value?.background;
         final products = productsController.productsCatlog_List.value;
@@ -59,13 +58,10 @@ class _ProductsCatalogState extends State<ProductsView> {
                 width: double.infinity,
                 height: double.infinity,
                 child: ShowNetworkImage(
-
                   imageSrc: backgroundImage,
                   mobileBoxFit: BoxFit.cover,
                 ),
               ),
-
-
             // Overlay
             Container(
               width: double.infinity,
@@ -80,7 +76,7 @@ class _ProductsCatalogState extends State<ProductsView> {
                 children: [
                   SizedBox(height: 100,),
                   _buildProductSection(status, isArabic, products),
-                  SizedBox(height: 40),
+                  SizedBox(height: 200),
                   containerbottom(
                     screenWidth: MediaQuery.of(context).size.width,
                     isArabic: isArabic,
@@ -147,7 +143,7 @@ class _ProductsCatalogState extends State<ProductsView> {
           children: [
             products.isEmpty
                 ? SizedBox(
-                    height: 200,
+                    height: 190,
                     child: Center(
                       child: Lottie.asset(
                         LottieAssets.nofounddata,

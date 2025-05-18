@@ -1,6 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:menusystemfront/models/products/category_model.dart';
 import 'package:menusystemfront/res/colors/app_color.dart';
 import 'package:menusystemfront/view_model/controller/products/product_view_model.dart';
 import 'package:show_network_image/show_network_image.dart';
@@ -25,7 +23,7 @@ class FillCategoryData extends StatefulWidget {
 }
 
 class _FillCategoryDataState extends State<FillCategoryData> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   late final PageController _pageController;
 
   @override
@@ -34,7 +32,7 @@ class _FillCategoryDataState extends State<FillCategoryData> {
 
     _pageController = PageController(
       initialPage: _selectedIndex,
-      viewportFraction: 0.4,
+      viewportFraction: 0.3,
     );
 
     _pageController.addListener(() {
@@ -136,15 +134,6 @@ class _FillCategoryDataState extends State<FillCategoryData> {
                           imageSrc: categoryModel.image?.toString() ?? '',
                           mobileBoxFit: BoxFit.cover,
                         ),
-
-                        //                        CachedNetworkImage(
-                         //                         fit: BoxFit.cover,
-                        //                         placeholder: (context, url) => const Center(
-                        //                           child: CircularProgressIndicator(),
-                        //                         ),
-                        //                         errorWidget: (context, url, error) => const Icon(Icons.broken_image),
-                        //                         imageUrl: categoryModel.image?.toString() ?? '',
-                        //                       ),
                       ),
                     ),
                     Padding(

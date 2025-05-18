@@ -85,9 +85,7 @@ class _homepageState extends State<homeview> {
                       isfromProducts: false,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: ListView.builder(
+                   ListView.builder(
                       scrollDirection: Axis.vertical,
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -102,7 +100,6 @@ class _homepageState extends State<homeview> {
                         );
                       },
                     ),
-                  ),
                   const SizedBox(height: 100),
                   containerbottom(
                     screenWidth: screenWidth,

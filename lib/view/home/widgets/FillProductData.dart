@@ -27,7 +27,7 @@ Widget build(BuildContext context) {
       DialogProduct(productsController, isArabic, prodModel, pricename, timeName);
     },
     child: SizedBox(
-      height: 230,
+      height: 200,
       child: Stack(
         children: [
           // Main Image Container

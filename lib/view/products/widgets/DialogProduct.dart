@@ -20,20 +20,15 @@ Future<dynamic> DialogProduct(
     builder: (context) {
       return StatefulBuilder(
         builder: (context, setState) {
-
-
-
           void updateDialog() => setState(() {});
-          print("!!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@@@@@#########${prodModel.timeProduct.toString()}");
-
           return Dialog(
             backgroundColor: AppColor.blackColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
             ),
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-              height: MediaQuery.of(context).size.height * 0.8,
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: MediaQuery.of(context).size.height * 0.7,
               decoration: BoxDecoration(
                 border: Border.all(color: AppColor.whiteColor, width: 0.5),
                 borderRadius: BorderRadius.circular(25),
@@ -55,11 +50,11 @@ Future<dynamic> DialogProduct(
                     const SizedBox(height: 10),
                     // Product Image
                     SizedBox(
-                      height: 230,
+                      height: 190,
                       child: Stack(
                         children: [
                           Container(
-                            height: 200,
+                            height: 180,
                             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(40),
@@ -98,7 +93,6 @@ Future<dynamic> DialogProduct(
                             child: priceTag('${prodModel.price?.toStringAsFixed(0) ?? "0"} $pricename'),
                           ),
                           Positioned(
-
                             bottom: 0,
                             right: 45,
                             child: priceTag('${prodModel.timeProduct.toString() ?? ""} $timeName'),
@@ -176,7 +170,7 @@ Widget priceTag(String text) {
     child: Text(
       text,
       style: const TextStyle(
-        fontSize: 18,
+        fontSize: 14,
         fontWeight: FontWeight.bold,
         color: AppColor.blackColor,
       ),

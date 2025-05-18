@@ -27,7 +27,7 @@ Widget build(BuildContext context) {
       );
     },
     child: Container(
-      height: 220,
+      height: 190,
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
