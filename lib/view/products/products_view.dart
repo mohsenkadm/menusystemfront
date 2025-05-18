@@ -49,7 +49,8 @@ class _ProductsCatalogState extends State<ProductsView> {
       appBar: _buildAppBar(isArabic),
       body: Obx(() {
         final status = productsController.rxRequestStatus.value;
-        final backgroundImage = productsController.resInfoModeldata?.value?.background;
+        final backgroundImage =
+            productsController.resInfoModeldata?.value?.background;
         final products = productsController.productsCatlog_List.value;
         return Stack(
           children: [
@@ -70,20 +71,30 @@ class _ProductsCatalogState extends State<ProductsView> {
             ),
 
             // Main Content
-            SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
-                children: [
-                  SizedBox(height: 100,),
-                  _buildProductSection(status, isArabic, products),
-                  SizedBox(height: 200),
-                  containerbottom(
-                    screenWidth: MediaQuery.of(context).size.width,
-                    isArabic: isArabic,
-                    productsController: productsController,
+            Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 100),
+                        _buildProductSection(status, isArabic, products),
+                        // Add extra space at the bottom to account for the fixed container
+                        SizedBox(
+                          height: 100,
+                        ), // Adjust this based on your container's height
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                ),
+                // Fixed bottom container
+                containerbottom(
+                  screenWidth: MediaQuery.of(context).size.width,
+                  isArabic: isArabic,
+                  productsController: productsController,
+                ),
+              ],
             ),
           ],
         );
@@ -105,8 +116,8 @@ class _ProductsCatalogState extends State<ProductsView> {
           productsController: productsController,
           categoryModel: productsController.category_List.value,
           isArabic: isArabic,
-          isUsedSubCategory: productsController
-                  .resInfoModeldata?.value?.isUsedSubCategory ??
+          isUsedSubCategory:
+              productsController.resInfoModeldata?.value?.isUsedSubCategory ??
               false,
           isfromProducts: true,
         ),
@@ -114,7 +125,11 @@ class _ProductsCatalogState extends State<ProductsView> {
     );
   }
 
-  Widget _buildProductSection(Status status, bool isArabic, List<dynamic> products) {
+  Widget _buildProductSection(
+    Status status,
+    bool isArabic,
+    List<dynamic> products,
+  ) {
     switch (status) {
       case Status.LOADING:
         return SizedBox(
@@ -129,13 +144,14 @@ class _ProductsCatalogState extends State<ProductsView> {
       case Status.ERROR:
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.6,
-          child: productsController.error.value == 'No internet'
-              ? InterNetExceptionWidget(
-                  onPress: () async => await productsController.refreshApi(),
-                )
-              : GeneralExceptionWidget(
-                  onPress: () async => await productsController.refreshApi(),
-                ),
+          child:
+              productsController.error.value == 'No internet'
+                  ? InterNetExceptionWidget(
+                    onPress: () async => await productsController.refreshApi(),
+                  )
+                  : GeneralExceptionWidget(
+                    onPress: () async => await productsController.refreshApi(),
+                  ),
         );
       case Status.COMPLETED:
         return Column(
@@ -143,29 +159,29 @@ class _ProductsCatalogState extends State<ProductsView> {
           children: [
             products.isEmpty
                 ? SizedBox(
-                    height: 190,
-                    child: Center(
-                      child: Lottie.asset(
-                        LottieAssets.nofounddata,
-                        width: 200,
-                        height: 200,
-                      ),
+                  height: 190,
+                  child: Center(
+                    child: Lottie.asset(
+                      LottieAssets.nofounddata,
+                      width: 200,
+                      height: 200,
                     ),
-                  )
-                : ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.all(5),
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      final product = products[index];
-                      return FillProductData(
-                        productsController: productsController,
-                        isArabic: isArabic,
-                        prodModel: product,
-                      );
-                    },
                   ),
+                )
+                : ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(5),
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    final product = products[index];
+                    return FillProductData(
+                      productsController: productsController,
+                      isArabic: isArabic,
+                      prodModel: product,
+                    );
+                  },
+                ),
           ],
         );
       default:
@@ -182,7 +198,8 @@ class _ProductsCatalogState extends State<ProductsView> {
 
     return AppBar(
       backgroundColor: Colors.transparent,
-      actions: [ IconButton(
+      actions: [
+        IconButton(
           onPressed: () {
             Get.toNamed(RouteName.navbar);
           },
@@ -203,7 +220,9 @@ class _ProductsCatalogState extends State<ProductsView> {
             fit: BoxFit.fitHeight,
             width: 50,
             height: 30,
-            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+            placeholder:
+                (context, url) =>
+                    const Center(child: CircularProgressIndicator()),
             errorWidget: (context, url, error) => const Icon(Icons.error),
             imageUrl: ImageAssets.imagetranslate,
           ),
@@ -231,35 +250,39 @@ class _ProductsCatalogState extends State<ProductsView> {
             fit: BoxFit.fitHeight,
             width: 50,
             height: 25,
-            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+            placeholder:
+                (context, url) =>
+                    const Center(child: CircularProgressIndicator()),
             errorWidget: (context, url, error) => const Icon(Icons.error),
             imageUrl: ImageAssets.imageFilter,
           ),
         ),
         const SizedBox(width: 10),
       ],
-      leading: Obx(() => productsController.resInfoModeldata?.value == null
-          ? const SizedBox()
-          : Padding(
-              padding: const EdgeInsets.only(top: 10, left: 10),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(5)),
-                child: 
-                ShowNetworkImage(
+      leading: Obx(
+        () =>
+            productsController.resInfoModeldata?.value == null
+                ? const SizedBox()
+                : Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 10),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    child: ShowNetworkImage(
                       imageSrc:
                           productsController.resInfoModeldata!.value!.logo
                               .toString() ??
                           '',
                       mobileBoxFit: BoxFit.fitWidth,
                     ),
-                // CachedNetworkImage(
-                //   fit: BoxFit.fitWidth,
-                //   placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                //   errorWidget: (context, url, error) => const Icon(Icons.error),
-                //   imageUrl: productsController.resInfoModeldata!.value!.logo.toString(),
-                // ),
-              ),
-            )),
+                    // CachedNetworkImage(
+                    //   fit: BoxFit.fitWidth,
+                    //   placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                    //   errorWidget: (context, url, error) => const Icon(Icons.error),
+                    //   imageUrl: productsController.resInfoModeldata!.value!.logo.toString(),
+                    // ),
+                  ),
+                ),
+      ),
       elevation: 0,
     );
   }
