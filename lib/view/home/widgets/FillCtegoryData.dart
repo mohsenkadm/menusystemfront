@@ -40,9 +40,9 @@ class _FillCategoryDataState extends State<FillCategoryData> {
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.productsController.category_List.length > 1) {
+      if (widget.productsController.category_List.isNotEmpty) {
         final categoryId =
-            widget.productsController.category_List[1].categoryId ?? 0;
+            widget.productsController.category_List[0].categoryId ?? 0;
 
         if (widget.isfromProducts == true) {
           widget.productsController.getproductsApi(categoryId: categoryId);

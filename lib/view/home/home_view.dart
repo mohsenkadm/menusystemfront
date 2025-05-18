@@ -69,9 +69,9 @@ class _homepageState extends State<homeview> {
                     isArabic: isArabic,
                     productsController: productsController,
                   ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    height: 180,
+                  const SizedBox(height: 30),
+                  Container(
+                    height: 150,
                     width: screenWidth,
                     child: FillCategoryData(
                       productsController: productsController,
@@ -100,7 +100,7 @@ class _homepageState extends State<homeview> {
                         );
                       },
                     ),
-                  const SizedBox(height: 100),
+                  const SizedBox(height: 50),
                   containerbottom(
                     screenWidth: screenWidth,
                     isArabic: isArabic,
