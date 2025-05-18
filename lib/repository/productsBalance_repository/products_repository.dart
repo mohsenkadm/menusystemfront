@@ -9,12 +9,12 @@ class ProductsRepository {
   final _apiService = NetworkApiServices();
   
    final url2 = html.window.location.href;
-   late final String name;
+   late final String name='Avoca';
 
    ProductsRepository() {
-     name = Uri.parse(url2).pathSegments.isNotEmpty
-         ? Uri.parse(url2).pathSegments.last
-         : '';
+    //  name = Uri.parse(url2).pathSegments.isNotEmpty
+    //      ? Uri.parse(url2).pathSegments.last
+    //      : '';
    }
  
   Future<dynamic> getProductApi(var parameter) async {
