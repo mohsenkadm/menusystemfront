@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         title: '',
         debugShowCheckedModeBanner: false,
         translations: Languages(),
-        locale: const Locale('en', 'US'),
+        locale: const Locale('ar', 'SA'),
         fallbackLocale: const Locale('en', 'US'),
         theme: ThemeData(
           inputDecorationTheme: InputDecorationTheme(
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
               borderRadius: BorderRadius.circular(25.0),
             ),
           ),
-          fontFamily: "Cairo",
+          fontFamily: "Almarai",
           primarySwatch: Colors.blue,
           textTheme: const TextTheme(
               titleLarge:

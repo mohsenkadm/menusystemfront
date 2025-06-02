@@ -58,7 +58,14 @@ dependencies:
   fl_chart: ^0.71.0  
   dio: ^5.8.0+1
   show_network_image: ^0.0.2
+  flutter_launcher_icons: ^0.14.3
 
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  web: true
+  image_path: "assets/images/restaurant.png"
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -86,6 +93,17 @@ flutter:
   # - assets/icons
   #- assets/images/
   - assets/lottie/
+  fonts:
+    - family: Almarai
+      fonts:
+        - asset: assets/fonts/Almarai/Almarai-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Almarai/Almarai-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Almarai/Almarai-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Almarai/Almarai-ExtraBold.ttf
+          weight: 800
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

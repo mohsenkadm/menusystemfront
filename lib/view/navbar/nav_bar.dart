@@ -147,7 +147,7 @@ class _navbarState extends State<navbar> {
         if (logo.isEmpty) return const SizedBox();
 
         return Padding(
-          padding: const EdgeInsets.only(top: 10, left: 10),
+          padding: const EdgeInsets.all(8),
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(5)),
             child: ShowNetworkImage(

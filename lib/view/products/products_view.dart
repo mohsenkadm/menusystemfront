@@ -17,8 +17,15 @@ import 'package:menusystemfront/view/navbar/widget/Dialogfilter.dart';
 import 'package:menusystemfront/view_model/controller/products/product_view_model.dart';
 import 'package:show_network_image/show_network_image.dart';
 
+import '../../models/products/subCatecory_model.dart';
+import '../home/widgets/product_two.dart';
+
 class ProductsView extends StatefulWidget {
-  const ProductsView({Key? key}) : super(key: key);
+  final SubCategoryModel subcategoryModel;
+  final int? subCategoryId;
+
+  ProductsView({Key? key, required this.subcategoryModel, this.subCategoryId})
+    : super(key: key);
 
   @override
   State<ProductsView> createState() => _ProductsCatalogState();
@@ -27,10 +34,18 @@ class ProductsView extends StatefulWidget {
 class _ProductsCatalogState extends State<ProductsView> {
   final ProductsController productsController = Get.find<ProductsController>();
   final TextEditingController textEditingController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  int? subCategoryId;
+  var subCategoryModel;
 
   @override
   void initState() {
     super.initState();
+    subCategoryId = widget.subCategoryId ?? 0;
+    subCategoryModel = widget.subcategoryModel;
+
+    productsController.selectedSubCategoryId.value = subCategoryId!;
+    productsController.selectedSubCategoryId.value = subCategoryId ?? 0;
     _loadProducts();
   }
 
@@ -45,6 +60,23 @@ class _ProductsCatalogState extends State<ProductsView> {
     final bool isArabic = Get.locale?.languageCode == 'ar';
 
     return Scaffold(
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 50),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(40)),
+          child: FloatingActionButton(
+            backgroundColor: AppColor.whiteColor,
+            onPressed: () {
+              _scrollController.animateTo(
+                0,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+              );
+            },
+            child: const Icon(Icons.keyboard_arrow_up),
+          ),
+        ),
+      ),
       extendBodyBehindAppBar: true,
       appBar: _buildAppBar(isArabic),
       body: Obx(() {
@@ -69,30 +101,38 @@ class _ProductsCatalogState extends State<ProductsView> {
               height: double.infinity,
               color: Colors.black.withOpacity(0.7),
             ),
-
-            // Main Content
             Column(
               children: [
+                const SizedBox(height: 70),
+                Text(
+                  isArabic
+                      ? widget.subcategoryModel.subCategoryName ?? ""
+                      : widget.subcategoryModel.subCategoryNameEn ?? "",
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+
+                const SizedBox(height: 20),
                 Expanded(
                   child: SingleChildScrollView(
+                    controller: _scrollController,
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
-                        const SizedBox(height: 100),
                         _buildProductSection(status, isArabic, products),
-                        // Add extra space at the bottom to account for the fixed container
-                        SizedBox(
-                          height: 100,
-                        ), // Adjust this based on your container's height
+                        SizedBox(height: 50),
+                        // Fixed bottom container
+                        containerbottom(
+                          screenWidth: MediaQuery.of(context).size.width,
+                          isArabic: isArabic,
+                          productsController: productsController,
+                        ),
                       ],
                     ),
                   ),
-                ),
-                // Fixed bottom container
-                containerbottom(
-                  screenWidth: MediaQuery.of(context).size.width,
-                  isArabic: isArabic,
-                  productsController: productsController,
                 ),
               ],
             ),
@@ -168,14 +208,20 @@ class _ProductsCatalogState extends State<ProductsView> {
                     ),
                   ),
                 )
-                : ListView.builder(
+                : GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  padding: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(8),
                   itemCount: products.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    mainAxisExtent: 200,
+                  ),
                   itemBuilder: (context, index) {
                     final product = products[index];
-                    return FillProductData(
+                    return ProductTwo(
                       productsController: productsController,
                       isArabic: isArabic,
                       prodModel: product,
@@ -274,12 +320,6 @@ class _ProductsCatalogState extends State<ProductsView> {
                           '',
                       mobileBoxFit: BoxFit.fitWidth,
                     ),
-                    // CachedNetworkImage(
-                    //   fit: BoxFit.fitWidth,
-                    //   placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                    //   errorWidget: (context, url, error) => const Icon(Icons.error),
-                    //   imageUrl: productsController.resInfoModeldata!.value!.logo.toString(),
-                    // ),
                   ),
                 ),
       ),

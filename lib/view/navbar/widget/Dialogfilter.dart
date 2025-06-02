@@ -20,7 +20,7 @@ Future<dynamic> Dialogfilter(bool isArabic, String pricename, String timeName) {
               ),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.8,
-                height: MediaQuery.of(context).size.height * 0.7, // increased height
+                height: MediaQuery.of(context).size.height * 0.4, // increased height
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: AppColor.whiteColor,
@@ -61,12 +61,15 @@ Future<dynamic> Dialogfilter(bool isArabic, String pricename, String timeName) {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text(
-                                  isArabic ? "اختر السعر" : "Select Price Range",
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColor.whiteColor,
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    isArabic ? "اختر السعر" : "Select Price Range",
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColor.whiteColor,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 10),
@@ -120,79 +123,79 @@ Future<dynamic> Dialogfilter(bool isArabic, String pricename, String timeName) {
                     ),
 
                     // Time Section
-                    Container(
-                      margin: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppColor.whiteColor,
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, left: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  isArabic ? "وقت الطهي" : "Cook date",
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColor.whiteColor,
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                CachedNetworkImage(
-                                  fit: BoxFit.fitHeight,
-                                  width: 50,
-                                  height: 30,
-                                  placeholder: (context, url) =>
-                                  const Center(child: CircularProgressIndicator()),
-                                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                                  imageUrl: ImageAssets.imagecoke,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(
-                                children: [
-                                  for (var time in ["5", "10", "15", "20", "25", "30", "35"])
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                                      child: Text(
-                                        "$time $timeName",
-                                        style: const TextStyle(
-                                          fontSize: 10,
-                                          color: AppColor.whiteColor,
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Slider(
-                            activeColor: Colors.red,
-                            value: productsController.selectedMintie.value,
-                            min: 5,
-                            max: 35,
-                            divisions: 6,
-                            label: productsController.selectedMintie.value.toInt().toString(),
-                            onChanged: (value) {
-                              productsController.selectedMintie.value = value;
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   margin: const EdgeInsets.all(10),
+                    //   decoration: BoxDecoration(
+                    //     border: Border.all(
+                    //       color: AppColor.whiteColor,
+                    //       width: 1,
+                    //     ),
+                    //     borderRadius: BorderRadius.circular(20),
+                    //   ),
+                    //   child: Column(
+                    //     children: [
+                    //       Padding(
+                    //         padding: const EdgeInsets.only(top: 10, left: 10),
+                    //         child: Row(
+                    //           mainAxisAlignment: MainAxisAlignment.start,
+                    //           children: [
+                    //             Text(
+                    //               isArabic ? "وقت الطهي" : "Cook date",
+                    //               style: const TextStyle(
+                    //                 fontSize: 20,
+                    //                 fontWeight: FontWeight.bold,
+                    //                 color: AppColor.whiteColor,
+                    //               ),
+                    //             ),
+                    //             const SizedBox(width: 10),
+                    //             CachedNetworkImage(
+                    //               fit: BoxFit.fitHeight,
+                    //               width: 50,
+                    //               height: 30,
+                    //               placeholder: (context, url) =>
+                    //               const Center(child: CircularProgressIndicator()),
+                    //               errorWidget: (context, url, error) => const Icon(Icons.error),
+                    //               imageUrl: ImageAssets.imagecoke,
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //       const SizedBox(height: 20),
+                    //       // SingleChildScrollView(
+                    //       //   scrollDirection: Axis.horizontal,
+                    //       //   child: Padding(
+                    //       //     padding: const EdgeInsets.symmetric(horizontal: 10),
+                    //       //     child: Row(
+                    //       //       children: [
+                    //       //         for (var time in ["5", "10", "15", "20", "25", "30", "35"])
+                    //       //           Padding(
+                    //       //             padding: const EdgeInsets.symmetric(horizontal: 8),
+                    //       //             child: Text(
+                    //       //               "$time $timeName",
+                    //       //               style: const TextStyle(
+                    //       //                 fontSize: 10,
+                    //       //                 color: AppColor.whiteColor,
+                    //       //               ),
+                    //       //             ),
+                    //       //           ),
+                    //       //       ],
+                    //       //     ),
+                    //       //   ),
+                    //       // ),
+                    //       Slider(
+                    //         activeColor: Colors.red,
+                    //         value: productsController.selectedMintie.value,
+                    //         min: 5,
+                    //         max: 35,
+                    //         divisions: 6,
+                    //         label: productsController.selectedMintie.value.toInt().toString(),
+                    //         onChanged: (value) {
+                    //           productsController.selectedMintie.value = value;
+                    //         },
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

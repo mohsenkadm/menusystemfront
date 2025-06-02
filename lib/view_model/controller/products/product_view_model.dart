@@ -90,7 +90,6 @@ class ProductsController extends GetxController {
   }
 
   Future<void> getSubCategoryApi({int categoryid = 0}) async {
-    print("Fetching subcategories...");
 
     await _api
         .getSubCategoryApi(categoryid)
