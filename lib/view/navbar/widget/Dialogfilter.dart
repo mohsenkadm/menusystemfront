@@ -13,19 +13,18 @@ Future<dynamic> Dialogfilter(bool isArabic, String pricename, String timeName) {
       return StatefulBuilder(
         builder: (context, setState) {
           return Obx(
-                () => Dialog(
+            () => Dialog(
               backgroundColor: AppColor.blackColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25),
               ),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.8,
-                height: MediaQuery.of(context).size.height * 0.7, // increased height
+                height:
+                    MediaQuery.of(context).size.height *
+                    0.7, // increased height
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: AppColor.whiteColor,
-                    width: 1,
-                  ),
+                  border: Border.all(color: AppColor.whiteColor, width: 1),
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: Column(
@@ -62,7 +61,9 @@ Future<dynamic> Dialogfilter(bool isArabic, String pricename, String timeName) {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
-                                  isArabic ? "اختر السعر" : "Select Price Range",
+                                  isArabic
+                                      ? "اختر السعر"
+                                      : "Select Price Range",
                                   style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -74,9 +75,13 @@ Future<dynamic> Dialogfilter(bool isArabic, String pricename, String timeName) {
                                   fit: BoxFit.fitHeight,
                                   width: 50,
                                   height: 30,
-                                  placeholder: (context, url) =>
-                                  const Center(child: CircularProgressIndicator()),
-                                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                                  placeholder:
+                                      (context, url) => const Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                  errorWidget:
+                                      (context, url, error) =>
+                                          const Icon(Icons.error),
                                   imageUrl: ImageAssets.imagedollar,
                                 ),
                               ],
@@ -86,14 +91,24 @@ Future<dynamic> Dialogfilter(bool isArabic, String pricename, String timeName) {
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                              ),
                               child: Row(
                                 children: [
-                                  for (var price in ["10,000", "15,000", "20,000", "25,000", "30,000"])
+                                  for (var price in [
+                                    10000,
+                                    15000,
+                                    20000,
+                                    25000,
+                                    70000,
+                                  ])
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                      ),
                                       child: Text(
-                                        "$price IQD",
+                                        "${price.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')} IQD",
                                         style: const TextStyle(
                                           fontSize: 10,
                                           color: AppColor.whiteColor,
@@ -108,11 +123,24 @@ Future<dynamic> Dialogfilter(bool isArabic, String pricename, String timeName) {
                             activeColor: Colors.yellow,
                             value: productsController.selectedPrice.value,
                             min: 10000,
-                            max: 30000,
-                            divisions: 4,
-                            label: productsController.selectedPrice.value.toInt().toString(),
+                            max: 70000,
+                            divisions:
+                                4, // Changed from 5 to 4 because you have 5 values (which means 4 intervals)
+                            label: productsController.selectedPrice.value
+                                .toInt()
+                                .toString()
+                                .replaceAllMapped(
+                                  RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                                  (Match m) => '${m[1]},',
+                                ),
                             onChanged: (value) {
                               productsController.selectedPrice.value = value;
+                              productsController.getProductsBySubCategoryApi(
+                                productsController
+                                        .selectedSubCategoryId
+                                        .value ??
+                                    0,
+                              );
                             },
                           ),
                         ],
@@ -149,9 +177,13 @@ Future<dynamic> Dialogfilter(bool isArabic, String pricename, String timeName) {
                                   fit: BoxFit.fitHeight,
                                   width: 50,
                                   height: 30,
-                                  placeholder: (context, url) =>
-                                  const Center(child: CircularProgressIndicator()),
-                                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                                  placeholder:
+                                      (context, url) => const Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                  errorWidget:
+                                      (context, url, error) =>
+                                          const Icon(Icons.error),
                                   imageUrl: ImageAssets.imagecoke,
                                 ),
                               ],
@@ -161,12 +193,24 @@ Future<dynamic> Dialogfilter(bool isArabic, String pricename, String timeName) {
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                              ),
                               child: Row(
                                 children: [
-                                  for (var time in ["5", "10", "15", "20", "25", "30", "35"])
+                                  for (var time in [
+                                    "5",
+                                    "10",
+                                    "25",
+                                    "35",
+                                    "50",
+                                    "70",
+                                    "95",
+                                  ])
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                      ),
                                       child: Text(
                                         "$time $timeName",
                                         style: const TextStyle(
@@ -183,11 +227,20 @@ Future<dynamic> Dialogfilter(bool isArabic, String pricename, String timeName) {
                             activeColor: Colors.red,
                             value: productsController.selectedMintie.value,
                             min: 5,
-                            max: 35,
-                            divisions: 6,
-                            label: productsController.selectedMintie.value.toInt().toString(),
+                            max: 95,
+                            divisions: 6, // Steps: 5, 20, 35, 50, 65, 80, 95
+                            label:
+                                productsController.selectedMintie.value
+                                    .toInt()
+                                    .toString(), // Show raw value
                             onChanged: (value) {
                               productsController.selectedMintie.value = value;
+                              productsController.getProductsBySubCategoryApi(
+                                productsController
+                                        .selectedSubCategoryId
+                                        .value ??
+                                    0,
+                              );
                             },
                           ),
                         ],

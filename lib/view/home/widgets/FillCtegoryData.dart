@@ -38,23 +38,22 @@ class _FillCategoryDataState extends State<FillCategoryData> {
     _pageController.addListener(() {
       if (mounted) setState(() {});
     });
+ 
+      // if (widget.productsController.category_List.isNotEmpty) {
+      //   final categoryId =
+      //       widget.productsController.category_List[0].categoryId ?? 0;
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.productsController.category_List.isNotEmpty) {
-        final categoryId =
-            widget.productsController.category_List[0].categoryId ?? 0;
-
-        if (widget.isfromProducts == true) {
-          widget.productsController.getproductsApi(categoryId: categoryId);
-        } else {
-          if (widget.isUsedSubCategory) {
-            widget.productsController.getSubCategoryApi(categoryid: categoryId);
-          } else {
-            widget.productsController.getproductsApi(categoryId: categoryId);
-          }
-        }
-      }
-    });
+      //   if (widget.isfromProducts == true) {
+      //     widget.productsController.getproductsApi(categoryId: categoryId);
+      //   } 
+      //   else {
+      //     if (widget.isUsedSubCategory) {
+      //       widget.productsController.getSubCategoryApi(categoryid: categoryId);
+      //     } else {
+      //       widget.productsController.getproductsApi(categoryId: categoryId);
+      //     }
+      //   }
+      // }
   }
 
   @override

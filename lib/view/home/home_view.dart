@@ -70,7 +70,7 @@ class _homepageState extends State<homeview> {
                     productsController: productsController,
                   ),
                   const SizedBox(height: 30),
-                  Container(
+                  SizedBox(
                     height: 150,
                     width: screenWidth,
                     child: FillCategoryData(

@@ -36,8 +36,9 @@ class _ProductsCatalogState extends State<ProductsView> {
 
   Future<void> _loadProducts() async {
     await productsController.getResInfoApitApi();
-    await productsController.getCategoryApi();
-    await productsController.getproductsApi();
+   // await productsController.getCategoryApi();
+   int subCategoryId = Get.arguments?['subCategoryId'] ?? 0;
+    await productsController.getProductsBySubCategoryApi(subCategoryId);
   }
 
   @override
@@ -79,6 +80,7 @@ class _ProductsCatalogState extends State<ProductsView> {
                     child: Column(
                       children: [
                         const SizedBox(height: 100),
+                       // _buildCategorySection(status, isArabic),
                         _buildProductSection(status, isArabic, products),
                         // Add extra space at the bottom to account for the fixed container
                         SizedBox(
@@ -102,28 +104,28 @@ class _ProductsCatalogState extends State<ProductsView> {
     );
   }
 
-  Widget _buildCategorySection(Status status, bool isArabic) {
-    if (status != Status.COMPLETED) {
-      return const SizedBox.shrink();
-    }
+  // Widget _buildCategorySection(Status status, bool isArabic) {
+  //   if (status != Status.COMPLETED) {
+  //     return const SizedBox.shrink();
+  //   }
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 100),
-      child: SizedBox(
-        height: 180,
-        width: MediaQuery.of(context).size.width,
-        child: FillCategoryData(
-          productsController: productsController,
-          categoryModel: productsController.category_List.value,
-          isArabic: isArabic,
-          isUsedSubCategory:
-              productsController.resInfoModeldata?.value?.isUsedSubCategory ??
-              false,
-          isfromProducts: true,
-        ),
-      ),
-    );
-  }
+  //   return Padding(
+  //     padding: const EdgeInsets.only(top: 100),
+  //     child: SizedBox(
+  //       height: 180,
+  //       width: MediaQuery.of(context).size.width,
+  //       child: FillCategoryData(
+  //         productsController: productsController,
+  //         categoryModel: productsController.category_List.value,
+  //         isArabic: isArabic,
+  //         isUsedSubCategory:
+  //             productsController.resInfoModeldata?.value?.isUsedSubCategory ??
+  //             false,
+  //         isfromProducts: true,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildProductSection(
     Status status,

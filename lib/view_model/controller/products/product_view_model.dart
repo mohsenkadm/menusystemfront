@@ -117,7 +117,7 @@ class ProductsController extends GetxController {
       setRxRequestStatus(Status.COMPLETED);
       setproductsList(value);
     })
-        .onError((error, stackTrace) {
+     .onError((error, stackTrace) {
       setError(error.toString());
       setRxRequestStatus(Status.ERROR);
     });
@@ -126,7 +126,7 @@ class ProductsController extends GetxController {
   // New method to handle subcategory selection
   Future<void> selectSubCategory(int subCategoryId) async {
     selectedSubCategoryId.value = subCategoryId;
-    await getproductsApi();
+    //await getproductsApi();
   }
 
   // New method to clear subcategory selection
