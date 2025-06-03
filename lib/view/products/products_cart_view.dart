@@ -66,7 +66,6 @@ class _ProductsCartState extends State<ProductsCartView> {
               );
             }),
 
-
             // Overlay
             Container(
               width: double.infinity,
@@ -108,13 +107,10 @@ class _ProductsCartState extends State<ProductsCartView> {
   }
 
   Widget _buildProductSection(Status status, bool isArabic) {
-    final pricename =
-        isArabic ? 'دينار' : 'IQD';
-    final timeName =
-        isArabic ? 'دقيقة' : 'Min';
+    final pricename = isArabic ? 'دينار' : 'IQD';
+    final timeName = isArabic ? 'دقيقة' : 'Min';
 
-    List<dynamic> products =
-        productsController.listItemCard_List.value;
+    List<dynamic> products = productsController.listItemCard_List.value;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -136,215 +132,198 @@ class _ProductsCartState extends State<ProductsCartView> {
               ),
             )
             : ListView.builder(
-  physics: const NeverScrollableScrollPhysics(),
-  shrinkWrap: true,
-  padding: const EdgeInsets.all(5),
-  itemCount: products.length,
-  itemBuilder: (context, index) {
-    final product = products[index];
-    return Container(
-      margin: const EdgeInsets.symmetric(
-        vertical: 5,
-        horizontal: 10,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        border: Border.all(color: AppColor.blackColor, width: 0.2),
-        borderRadius: BorderRadius.circular(35),
-      ),
-      child: Row(
-        children: [
-          // Left: Product Image with ShowNetworkImage
-          Container(
-            width: 150,
-            height: 170,
-            decoration: BoxDecoration(
-              borderRadius: isArabic
-                  ? const BorderRadius.only(
-                      topRight: Radius.circular(35),
-                      bottomRight: Radius.circular(35),
-                    )
-                  : const BorderRadius.only(
-                      topLeft: Radius.circular(35),
-                      bottomLeft: Radius.circular(35),
-                    ),
-            ),
-            child: ClipRRect(
-              borderRadius: isArabic
-                  ? const BorderRadius.only(
-                      topRight: Radius.circular(35),
-                      bottomRight: Radius.circular(35),
-                    )
-                  : const BorderRadius.only(
-                      topLeft: Radius.circular(35),
-                      bottomLeft: Radius.circular(35),
-                    ),
-              child: ShowNetworkImage(
-                imageSrc: product.image ?? "",
-                mobileBoxFit: BoxFit.cover,
-                 ),
-            ),
-          ),
-          
-          const SizedBox(width: 10),
-          
-          // Right: Product Details
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 10),
-                // Product Name
-                Text(
-                  isArabic
-                      ? product.name.toString()
-                      : product.nameEn.toString(),
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColor.whiteColor,
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(5),
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                final product = products[index];
+                return Container(
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 5,
+                    horizontal: 10,
                   ),
-                ),
-                const SizedBox(height: 10),
-                
-                // Price and Time Containers
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(35),
-                      ),
-                      child: Text(
-                        '${NumberFormat("#,##0", "ar").format(product.price)} $pricename',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: AppColor.blackColor,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    border: Border.all(color: AppColor.blackColor, width: 0.2),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    children: [
+                      // Left: Product Image with ShowNetworkImage
+                      Container(
+                        width: 150,
+                        height: 170,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              isArabic
+                                  ? const BorderRadius.only(
+                                    topRight: Radius.circular(35),
+                                    bottomRight: Radius.circular(35),
+                                  )
+                                  : const BorderRadius.only(
+                                    topLeft: Radius.circular(35),
+                                    bottomLeft: Radius.circular(35),
+                                  ),
+                        ),
+                        child: ClipRRect(
+                          borderRadius:
+                              isArabic
+                                  ? const BorderRadius.only(
+                                    topRight: Radius.circular(20),
+                                    bottomRight: Radius.circular(20),
+                                  )
+                                  : const BorderRadius.only(
+                                    topLeft: Radius.circular(35),
+                                    bottomLeft: Radius.circular(35),
+                                  ),
+                          child: ShowNetworkImage(
+                            imageSrc: product.image ?? "",
+                            mobileBoxFit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(35),
-                      ),
-                      child: Text(
-                        '${product.timeProduct} $timeName',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: AppColor.blackColor,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                  ],
-                ),
 
-                // Add/Remove Buttons
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Delete Button
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppColor.whiteColor,
-                        borderRadius: BorderRadius.circular(25),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: IconButton(
-                        onPressed: () {
-                          productsController.removeFromCart(product);
-                          productsController.getListItemCard();
-                          productsController.update();
-                        },
-                        icon: const Icon(
-                          Icons.delete,
-                          color: AppColor.redColor,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    
-                    // Product Count
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 18,
-                        vertical: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColor.whiteColor,
-                        borderRadius: BorderRadius.circular(25),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        '${product.count}',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: AppColor.blackColor,
-                        ),
-                      ),
-                    ),
+                      const SizedBox(width: 10),
 
-                    const SizedBox(width: 10),
-                    
-                    // Add Button
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppColor.whiteColor,
-                        borderRadius: BorderRadius.circular(25),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: IconButton(
-                        onPressed: () {
-                          productsController.addToCart(product);
-                          productsController.getListItemCard();
-                          productsController.update();
-                        },
-                        icon: const Icon(
-                          Icons.add,
-                          color: AppColor.blackColor,
-                          size: 20,
+                      // Right: Product Details
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 10),
+                            // Product Name
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  isArabic
+                                      ? product.name.toString()
+                                      : product.nameEn.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColor.whiteColor,
+                                  ),
+                                ),
+                                // Spacer(),
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(35),
+                                  ),
+                                  child: Text(
+                                    '${NumberFormat("#,##0", "ar").format(product.price)} $pricename',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColor.blackColor,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // Delete Button
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: AppColor.whiteColor,
+                                    borderRadius: BorderRadius.circular(25),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        blurRadius: 5,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      productsController.removeFromCart(
+                                        product,
+                                      );
+                                      productsController.getListItemCard();
+                                      productsController.update();
+                                    },
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: AppColor.redColor,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+
+                                // Product Count
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 18,
+                                    vertical: 10,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColor.whiteColor,
+                                    borderRadius: BorderRadius.circular(25),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        blurRadius: 5,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Text(
+                                    '${product.count}',
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColor.blackColor,
+                                    ),
+                                  ),
+                                ),
+
+                                const SizedBox(width: 10),
+
+                                // Add Button
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: AppColor.whiteColor,
+                                    borderRadius: BorderRadius.circular(25),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        blurRadius: 5,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      productsController.addToCart(product);
+                                      productsController.getListItemCard();
+                                      productsController.update();
+                                    },
+                                    icon: const Icon(
+                                      Icons.add,
+                                      color: AppColor.blackColor,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                );
+              },
             ),
-          ),
-        ],
-      ),
-    );
-  },
-),
         const SizedBox(height: 100),
         Container(
           height: 50,
@@ -454,9 +433,9 @@ class _ProductsCartState extends State<ProductsCartView> {
             productsController.resInfoModeldata?.value == null
                 ? const SizedBox()
                 : Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 10),
+                  padding: const EdgeInsets.all(8),
                   child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
                     child: ShowNetworkImage(
                       imageSrc:
                           productsController.resInfoModeldata!.value!.logo
@@ -464,17 +443,6 @@ class _ProductsCartState extends State<ProductsCartView> {
                           '',
                       mobileBoxFit: BoxFit.fitWidth,
                     ),
-                    //  CachedNetworkImage(
-                    //   fit: BoxFit.fitWidth,
-                    //   placeholder:
-                    //       (context, url) =>
-                    //           const Center(child: CircularProgressIndicator()),
-                    //   errorWidget:
-                    //       (context, url, error) => const Icon(Icons.error),
-                    //   imageUrl:
-                    //       productsController.resInfoModeldata!.value!.logo
-                    //           .toString(),
-                    // ),
                   ),
                 ),
       ),

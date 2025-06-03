@@ -14,7 +14,7 @@ class NetworkApiServices extends BaseApiServices {
   Future<dynamic> getApi(String url) async {
     
     if (kDebugMode) {
-      print(url);
+      // print(url);
     }
     dynamic responseJson;
     try {
@@ -28,8 +28,8 @@ class NetworkApiServices extends BaseApiServices {
       );
 
       if (kDebugMode) {
-        print(response.statusCode);
-        print(response.body);
+        // print(response.statusCode);
+        // print(response.body);
       }
       responseJson = returnResponse(response);
 
@@ -43,7 +43,7 @@ class NetworkApiServices extends BaseApiServices {
     } on RequestTimeOut {
       throw RequestTimeOut('');
     }
-    print(responseJson);
+    // print(responseJson);
     return responseJson;
   }
 
@@ -62,8 +62,8 @@ class NetworkApiServices extends BaseApiServices {
   @override
   Future<dynamic> postApi(var data, String url) async {
     if (kDebugMode) {
-      print(url);
-      print(data);
+      // print(url);
+      // print(data);
     }
     var authToken = box.read('token');
     final headers = {
@@ -85,7 +85,7 @@ class NetworkApiServices extends BaseApiServices {
       throw RequestTimeOut('');
     }
     if (kDebugMode) {
-      print(responseJson);
+      // print(responseJson);
     }
     return responseJson;
   }
@@ -93,10 +93,10 @@ class NetworkApiServices extends BaseApiServices {
   @override
   Future<dynamic> postApistream(http.MultipartRequest request) async {
     if (kDebugMode) {
-      print(request.url);
-      print("=============================request.url");
-
-      print(request);
+      // print(request.url);
+      // print("=============================request.url");
+      //
+      // print(request);
     }
     request.headers.addAll(_headers());
     dynamic responseJson;
@@ -115,8 +115,8 @@ class NetworkApiServices extends BaseApiServices {
       throw RequestTimeOut('');
     }
     if (kDebugMode) {
-      print(responseJson);
-      print("=============================request.url");
+      // print(responseJson);
+      // print("=============================request.url");
 
     }
     return responseJson;
@@ -125,8 +125,8 @@ class NetworkApiServices extends BaseApiServices {
   @override
   Future<dynamic> postApiwithparamter(String url) async {
     if (kDebugMode) {
-      print(url);
-      print("3=============================request.url");
+      // print(url);
+      // print("3=============================request.url");
 
     }
     var authToken = box.read('token');
@@ -153,8 +153,8 @@ class NetworkApiServices extends BaseApiServices {
     }
 
     if (kDebugMode) {
-      print(responseJson);
-      print("4=============================request.url");
+      // print(responseJson);
+      // print("4=============================request.url");
 
     }
     return responseJson;
@@ -189,8 +189,8 @@ class NetworkApiServices extends BaseApiServices {
   @override
   Future<dynamic> deleteApi( String url) async {
     if (kDebugMode) {
-      print(url);
-      print("5=============================request.url");
+      // print(url);
+      // print("5=============================request.url");
     }
     var authToken = box.read('token');
     final headers = {
@@ -213,8 +213,8 @@ class NetworkApiServices extends BaseApiServices {
       throw RequestTimeOut('');
     }
     if (kDebugMode) {
-      print(responseJson);
-      print("6=============================request.url");
+      // print(responseJson);
+      // print("6=============================request.url");
 
     }
     return responseJson;
