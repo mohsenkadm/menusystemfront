@@ -15,9 +15,17 @@ import 'package:menusystemfront/view/home/widgets/FillProductData.dart';
 import 'package:menusystemfront/view/home/widgets/containerbottom.dart';
 import 'package:menusystemfront/view/navbar/widget/Dialogfilter.dart';
 import 'package:menusystemfront/view_model/controller/products/product_view_model.dart';
+import 'package:show_network_image/show_network_image.dart';
+
+import '../../models/products/subCatecory_model.dart';
+import '../home/widgets/product_two.dart';
 
 class ProductsView extends StatefulWidget {
-  const ProductsView({Key? key}) : super(key: key);
+  final SubCategoryModel subcategoryModel;
+  final int? subCategoryId;
+
+  ProductsView({Key? key, required this.subcategoryModel, this.subCategoryId})
+    : super(key: key);
 
   @override
   State<ProductsView> createState() => _ProductsCatalogState();
@@ -26,17 +34,26 @@ class ProductsView extends StatefulWidget {
 class _ProductsCatalogState extends State<ProductsView> {
   final ProductsController productsController = Get.find<ProductsController>();
   final TextEditingController textEditingController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  int? subCategoryId;
+  var subCategoryModel;
 
   @override
   void initState() {
     super.initState();
+    subCategoryId = widget.subCategoryId ?? 0;
+    subCategoryModel = widget.subcategoryModel;
+
+    productsController.selectedSubCategoryId.value = subCategoryId!;
+    productsController.selectedSubCategoryId.value = subCategoryId ?? 0;
     _loadProducts();
   }
 
   Future<void> _loadProducts() async {
     await productsController.getResInfoApitApi();
-    await productsController.getCategoryApi();
-    await productsController.getproductsApi();
+   // await productsController.getCategoryApi();
+   int subCategoryId = Get.arguments?['subCategoryId'] ?? 0;
+    await productsController.getProductsBySubCategoryApi(subCategoryId);
   }
 
   @override
@@ -44,54 +61,82 @@ class _ProductsCatalogState extends State<ProductsView> {
     final bool isArabic = Get.locale?.languageCode == 'ar';
 
     return Scaffold(
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 50),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(40)),
+          child: FloatingActionButton(
+            backgroundColor: AppColor.whiteColor,
+            onPressed: () {
+              _scrollController.animateTo(
+                0,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+              );
+            },
+            child: const Icon(Icons.keyboard_arrow_up),
+          ),
+        ),
+      ),
       extendBodyBehindAppBar: true,
       appBar: _buildAppBar(isArabic),
       body: Obx(() {
         final status = productsController.rxRequestStatus.value;
-        final backgroundImage = productsController.resInfoModeldata?.value?.background;
+        final backgroundImage =
+            productsController.resInfoModeldata?.value?.background;
         final products = productsController.productsCatlog_List.value;
-
         return Stack(
           children: [
-            // Background Image
             if (backgroundImage != null && backgroundImage.isNotEmpty)
-              Container(
+              SizedBox(
                 width: double.infinity,
                 height: double.infinity,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(backgroundImage),
-                    fit: BoxFit.cover,
-                  ),
+                child: ShowNetworkImage(
+                  imageSrc: backgroundImage,
+                  mobileBoxFit: BoxFit.cover,
                 ),
               ),
-
             // Overlay
             Container(
               width: double.infinity,
               height: double.infinity,
               color: Colors.black.withOpacity(0.7),
             ),
-
-            // Main Content
-            SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
-                children: [
-                  // Category Section
-                  _buildCategorySection(status, isArabic),
-                  
-                  // Product List
-                  _buildProductSection(status, isArabic, products),
-                  
-                  // Bottom Container
-                  containerbottom(
-                    screenWidth: MediaQuery.of(context).size.width,
-                    isArabic: isArabic,
-                    productsController: productsController,
+            Column(
+              children: [
+                const SizedBox(height: 70),
+                Text(
+                  isArabic
+                      ? widget.subcategoryModel.subCategoryName ?? ""
+                      : widget.subcategoryModel.subCategoryNameEn ?? "",
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
-                ],
-              ),
+                ),
+
+                const SizedBox(height: 20),
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                      children: [ 
+                        const SizedBox(height: 100),
+                         _buildProductSection(status, isArabic, products),
+                        SizedBox(height: 50),
+                        // Fixed bottom container
+                        containerbottom(
+                          screenWidth: MediaQuery.of(context).size.width,
+                          isArabic: isArabic,
+                          productsController: productsController,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         );
@@ -99,30 +144,34 @@ class _ProductsCatalogState extends State<ProductsView> {
     );
   }
 
-  Widget _buildCategorySection(Status status, bool isArabic) {
-    if (status != Status.COMPLETED) {
-      return const SizedBox.shrink();
-    }
+  // Widget _buildCategorySection(Status status, bool isArabic) {
+  //   if (status != Status.COMPLETED) {
+  //     return const SizedBox.shrink();
+  //   }
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 100),
-      child: SizedBox(
-        height: 180,
-        width: MediaQuery.of(context).size.width,
-        child: FillCategoryData(
-          productsController: productsController,
-          categoryModel: productsController.category_List.value,
-          isArabic: isArabic,
-          isUsedSubCategory: productsController
-                  .resInfoModeldata?.value?.isUsedSubCategory ??
-              false,
-          isfromProducts: true,
-        ),
-      ),
-    );
-  }
+  //   return Padding(
+  //     padding: const EdgeInsets.only(top: 100),
+  //     child: SizedBox(
+  //       height: 180,
+  //       width: MediaQuery.of(context).size.width,
+  //       child: FillCategoryData(
+  //         productsController: productsController,
+  //         categoryModel: productsController.category_List.value,
+  //         isArabic: isArabic,
+  //         isUsedSubCategory:
+  //             productsController.resInfoModeldata?.value?.isUsedSubCategory ??
+  //             false,
+  //         isfromProducts: true,
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  Widget _buildProductSection(Status status, bool isArabic, List<dynamic> products) {
+  Widget _buildProductSection(
+    Status status,
+    bool isArabic,
+    List<dynamic> products,
+  ) {
     switch (status) {
       case Status.LOADING:
         return SizedBox(
@@ -137,53 +186,50 @@ class _ProductsCatalogState extends State<ProductsView> {
       case Status.ERROR:
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.6,
-          child: productsController.error.value == 'No internet'
-              ? InterNetExceptionWidget(
-                  onPress: () async => await productsController.refreshApi(),
-                )
-              : GeneralExceptionWidget(
-                  onPress: () async => await productsController.refreshApi(),
-                ),
+          child:
+              productsController.error.value == 'No internet'
+                  ? InterNetExceptionWidget(
+                    onPress: () async => await productsController.refreshApi(),
+                  )
+                  : GeneralExceptionWidget(
+                    onPress: () async => await productsController.refreshApi(),
+                  ),
         );
       case Status.COMPLETED:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 10, right: 20),
-              child: Text(
-                isArabic ? 'المنتجات' : 'Products',
-                textAlign: isArabic ? TextAlign.right : TextAlign.left,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppColor.whiteColor,
-                    ),
-              ),
-            ),
             products.isEmpty
                 ? SizedBox(
-                    height: 200,
-                    child: Center(
-                      child: Lottie.asset(
-                        LottieAssets.nofounddata,
-                        width: 200,
-                        height: 200,
-                      ),
+                  height: 190,
+                  child: Center(
+                    child: Lottie.asset(
+                      LottieAssets.nofounddata,
+                      width: 200,
+                      height: 200,
                     ),
-                  )
-                : ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.all(5),
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      final product = products[index];
-                      return FillProductData(
-                        productsController: productsController,
-                        isArabic: isArabic,
-                        prodModel: product,
-                      );
-                    },
                   ),
+                )
+                : GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(8),
+                  itemCount: products.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    mainAxisExtent: 200,
+                  ),
+                  itemBuilder: (context, index) {
+                    final product = products[index];
+                    return ProductTwo(
+                      productsController: productsController,
+                      isArabic: isArabic,
+                      prodModel: product,
+                    );
+                  },
+                ),
           ],
         );
       default:
@@ -201,6 +247,14 @@ class _ProductsCatalogState extends State<ProductsView> {
     return AppBar(
       backgroundColor: Colors.transparent,
       actions: [
+        IconButton(
+          onPressed: () {
+            Get.toNamed(RouteName.navbar);
+          },
+          icon: const Icon(Icons.home, color: AppColor.whiteColor, size: 30),
+        ),
+
+        const SizedBox(width: 10),
         GestureDetector(
           onTap: () {
             final currentLocale = Get.locale?.languageCode;
@@ -214,12 +268,14 @@ class _ProductsCatalogState extends State<ProductsView> {
             fit: BoxFit.fitHeight,
             width: 50,
             height: 30,
-            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+            placeholder:
+                (context, url) =>
+                    const Center(child: CircularProgressIndicator()),
             errorWidget: (context, url, error) => const Icon(Icons.error),
             imageUrl: ImageAssets.imagetranslate,
           ),
         ),
-        const SizedBox(width: 20),
+        const SizedBox(width: 10),
         GestureDetector(
           onTap: () {
             Get.toNamed(RouteName.productscartView);
@@ -235,34 +291,40 @@ class _ProductsCatalogState extends State<ProductsView> {
             imageUrl: ImageAssets.shoppingcard,
           ),
         ),
-        const SizedBox(width: 20),
+        const SizedBox(width: 10),
         GestureDetector(
           onTap: () => Dialogfilter(isArabic, pricename, timeName),
           child: CachedNetworkImage(
             fit: BoxFit.fitHeight,
             width: 50,
             height: 25,
-            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+            placeholder:
+                (context, url) =>
+                    const Center(child: CircularProgressIndicator()),
             errorWidget: (context, url, error) => const Icon(Icons.error),
             imageUrl: ImageAssets.imageFilter,
           ),
         ),
-        const SizedBox(width: 20),
+        const SizedBox(width: 10),
       ],
-      leading: Obx(() => productsController.resInfoModeldata?.value == null
-          ? const SizedBox()
-          : Padding(
-              padding: const EdgeInsets.only(top: 10, left: 10),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(5)),
-                child: CachedNetworkImage(
-                  fit: BoxFit.fitWidth,
-                  placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                  imageUrl: productsController.resInfoModeldata!.value!.logo.toString(),
+      leading: Obx(
+        () =>
+            productsController.resInfoModeldata?.value == null
+                ? const SizedBox()
+                : Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 10),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    child: ShowNetworkImage(
+                      imageSrc:
+                          productsController.resInfoModeldata!.value!.logo
+                              .toString() ??
+                          '',
+                      mobileBoxFit: BoxFit.fitWidth,
+                    ),
+                  ),
                 ),
-              ),
-            )),
+      ),
       elevation: 0,
     );
   }

@@ -12,5 +12,5 @@ class ImageAssets {
   static const String wifi = 'assets/images/wifi.png';
   static const String codeq = 'assets/images/codeq.png';
   static const String shoppingcard = 'assets/images/shoppingcard.png';
-
+  static const String icon = 'assets/icons/icon.jpg';
 }

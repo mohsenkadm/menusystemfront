@@ -1,8 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:menusystemfront/models/products/category_model.dart';
 import 'package:menusystemfront/res/colors/app_color.dart';
 import 'package:menusystemfront/view_model/controller/products/product_view_model.dart';
+import 'package:show_network_image/show_network_image.dart';
 
 class FillCategoryData extends StatefulWidget {
   const FillCategoryData({
@@ -25,14 +24,36 @@ class FillCategoryData extends StatefulWidget {
 
 class _FillCategoryDataState extends State<FillCategoryData> {
   int _selectedIndex = 0;
-  final PageController _pageController = PageController(viewportFraction: 0.4);
+  late final PageController _pageController;
 
   @override
   void initState() {
     super.initState();
+
+    _pageController = PageController(
+      initialPage: _selectedIndex,
+      viewportFraction: 0.3,
+    );
+
     _pageController.addListener(() {
       if (mounted) setState(() {});
     });
+ 
+      // if (widget.productsController.category_List.isNotEmpty) {
+      //   final categoryId =
+      //       widget.productsController.category_List[0].categoryId ?? 0;
+
+      //   if (widget.isfromProducts == true) {
+      //     widget.productsController.getproductsApi(categoryId: categoryId);
+      //   } 
+      //   else {
+      //     if (widget.isUsedSubCategory) {
+      //       widget.productsController.getSubCategoryApi(categoryid: categoryId);
+      //     } else {
+      //       widget.productsController.getproductsApi(categoryId: categoryId);
+      //     }
+      //   }
+      // }
   }
 
   @override
@@ -44,14 +65,10 @@ class _FillCategoryDataState extends State<FillCategoryData> {
   @override
   Widget build(BuildContext context) {
     if (widget.productsController.category_List.isEmpty) {
-      return const SizedBox(
-        height: 150,
-        child: Center(child: CircularProgressIndicator()),
-      );
+      return const SizedBox(child: Center(child: CircularProgressIndicator()));
     }
 
     return SizedBox(
-      height: 150,
       child: PageView.builder(
         controller: _pageController,
         itemCount: widget.productsController.category_List.length,
@@ -61,8 +78,8 @@ class _FillCategoryDataState extends State<FillCategoryData> {
             setState(() => _selectedIndex = index);
             final categoryModel =
                 widget.productsController.category_List.value[index];
-
             final categoryId = categoryModel.categoryId ?? 0;
+
             if (widget.isfromProducts == true) {
               widget.productsController.getproductsApi(categoryId: categoryId);
             } else {
@@ -81,11 +98,10 @@ class _FillCategoryDataState extends State<FillCategoryData> {
         itemBuilder: (context, index) {
           if (index < 0 ||
               index >= widget.productsController.category_List.length) {
-            return const SizedBox(); // Return empty widget for invalid indices
+            return const SizedBox();
           }
 
-          final categoryModel =
-              widget.productsController.category_List.value[index];
+          final categoryModel = widget.productsController.category_List[index];
           final pageOffset = index - (_pageController.page ?? index.toDouble());
           final isCentered = pageOffset.abs() < 0.5;
 
@@ -109,20 +125,13 @@ class _FillCategoryDataState extends State<FillCategoryData> {
                   children: [
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
-                      width: isCentered ? 70 : 50,
-                      height: isCentered ? 70 : 50,
+                      width: isCentered ? 80 : 60,
+                      height: isCentered ? 80 : 60,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
-                        child: CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          placeholder:
-                              (context, url) => const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                          errorWidget:
-                              (context, url, error) =>
-                                  const Icon(Icons.broken_image),
-                          imageUrl: categoryModel.image?.toString() ?? '',
+                        child: ShowNetworkImage(
+                          imageSrc: categoryModel.image?.toString() ?? '',
+                          mobileBoxFit: BoxFit.cover,
                         ),
                       ),
                     ),
@@ -138,7 +147,7 @@ class _FillCategoryDataState extends State<FillCategoryData> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          fontSize: 16, // Unified font size
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: AppColor.whiteColor,
                         ),

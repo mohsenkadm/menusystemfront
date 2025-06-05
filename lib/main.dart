@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart'; // Import GetStorage
- import 'package:menusystemfront/res/colors/app_color.dart';
+import 'package:menusystemfront/repository/productsBalance_repository/ListItemCard.dart';
+import 'package:menusystemfront/res/colors/app_color.dart';
 import 'package:menusystemfront/res/dependencyinjection/dependency_injection.dart';
 import 'package:menusystemfront/res/getx_loclization/languages.dart';
 import 'package:menusystemfront/res/routes/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await GetStorage.init(); // Initialize GetStorage
+  await GetStorage.init();
+  await ListItemCard.init();
   dependencyinjection.onInit();
-  Get.updateLocale(const Locale('ar')); // Switch to Arabic
+  Get.updateLocale(const Locale('ar'));
             
   runApp(const MyApp());
 }
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
         title: '',
         debugShowCheckedModeBanner: false,
         translations: Languages(),
-        locale: const Locale('en', 'US'),
+        locale: const Locale('ar', 'SA'),
         fallbackLocale: const Locale('en', 'US'),
         theme: ThemeData(
           inputDecorationTheme: InputDecorationTheme(
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
               borderRadius: BorderRadius.circular(25.0),
             ),
             labelStyle: const TextStyle(
-              color: AppColor.primaryColor, // Set your desired label color here
+              color: AppColor.primaryColor,
             ),
             hintStyle: const TextStyle(color: Colors.grey),
             alignLabelWithHint: true,
@@ -45,7 +47,7 @@ class MyApp extends StatelessWidget {
               borderRadius: BorderRadius.circular(25.0),
             ),
           ),
-          fontFamily: "Cairo",
+          fontFamily: "Almarai",
           primarySwatch: Colors.blue,
           textTheme: const TextTheme(
               titleLarge:

@@ -1,14 +1,17 @@
+import 'package:menusystemfront/models/products/product_model.dart';
+
+
 class ProductCartModel {
-    int productsId;
-    String name;
-    String? nameEn;
-    String? details;
-    String? detailsEn;
-    String? image; 
-    double price;
-    int? count;
-    int? timeProduct; // Restore the timeProduct field
-  
+  int productsId;
+  String name;
+  String? nameEn;
+  String? details;
+  String? detailsEn;
+  String? image;
+  double price;
+  int? count;
+  int? timeProduct;
+
   ProductCartModel({
     required this.productsId,
     required this.name,
@@ -17,11 +20,11 @@ class ProductCartModel {
     this.details,
     this.detailsEn,
     this.image,
-    this.count=1,
-    this.timeProduct, // Add timeProduct to the constructor
+    this.count = 1,
+    this.timeProduct,
   });
 
-  // Convert a ProductsModel instance to a JSON map
+  // Convert to JSON
   Map<String, dynamic> toJson() {
     return {
       'productsId': productsId,
@@ -30,26 +33,38 @@ class ProductCartModel {
       'details': details,
       'detailsEn': detailsEn,
       'image': image,
-      'price': price, 
+      'price': price,
       'count': count,
-      'timeProduct': timeProduct, // Serialize timeProduct
+      'timeProduct': timeProduct,
     };
   }
 
-  // Create a ProductsModel instance from a JSON map
+  // Create from JSON
   factory ProductCartModel.fromJson(Map<String, dynamic> json) {
     return ProductCartModel(
       productsId: json['productsId'],
       name: json['name'],
       nameEn: json['nameEn'],
-      details: json['details'], 
+      details: json['details'],
       detailsEn: json['detailsEn'],
       image: json['image'],
-      price: json['price'], 
+      price: (json['price'] as num).toDouble(),
       count: json['count'],
-      timeProduct: json['timeProduct'] ,
+      timeProduct: json['timeProduct'],
     );
   }
 
-   
+  factory ProductCartModel.fromProductModel(ProductsModel prod) {
+    return ProductCartModel(
+      productsId: prod.productsId,
+      name: prod.name ?? '',
+      nameEn: prod.nameEn,
+      details: prod.details,
+      detailsEn: prod.detailsEn,
+      image: prod.image,
+      price: prod.price ?? 0.0,
+      count: 1,
+      timeProduct: prod.timeProduct,
+    );
+  }
 }

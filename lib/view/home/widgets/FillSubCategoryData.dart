@@ -4,6 +4,10 @@ import 'package:get/get.dart';
 import 'package:menusystemfront/models/products/subCatecory_model.dart';
 import 'package:menusystemfront/res/routes/routes_name.dart';
 import 'package:menusystemfront/view_model/controller/products/product_view_model.dart';
+import 'package:show_network_image/show_network_image.dart';
+
+import '../../../models/products/product_model.dart';
+import '../../products/products_view.dart';
 
 class FillSubCategoryData extends StatelessWidget {
   const FillSubCategoryData({
@@ -19,49 +23,74 @@ class FillSubCategoryData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
-        Get.toNamed(
-          RouteName.productsView,
-          arguments: {'subCategoryId': subcategoryModel.subCategoryId},
-        );
+        // Get.toNamed(
+        //   RouteName.productsView,
+        //   arguments: {
+        //     'subCategoryId': subcategoryModel.subCategoryId,
+        //     'subCategoryModel': subcategoryModel,
+        //   },
+        // );
+        Get.to(() => ProductsView(
+            subcategoryModel: subcategoryModel,
+            subCategoryId: subcategoryModel.subCategoryId,
+        ));
       },
       child: Container(
-       height: 150,
-       width: double.infinity, 
+        height: 190,
+        width: double.infinity,
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        padding: const EdgeInsets.all(0), 
-       decoration: BoxDecoration(
-         borderRadius: BorderRadius.circular(40),
-          
-         boxShadow: [
-           BoxShadow(
-             color: Colors.black.withOpacity(0.2),
-             blurRadius: 5,
-             offset: const Offset(0, 3),
-           ),
-         ],
-         image: DecorationImage(
-           image: CachedNetworkImageProvider(
-             subcategoryModel.image ?? "",
-           ),
-           fit: BoxFit.cover,
-         ),
-       ),
-       child: Center(
-         child: Text(
-           style: const TextStyle(
-             fontSize: 40,
-             fontWeight: FontWeight.bold,
-             wordSpacing: 2,
-             color: Colors.white,
-           ),
-           isArabic
-               ? subcategoryModel.subCategoryName.toString()
-               : subcategoryModel.subCategoryNameEn.toString(),
-         ),
-       ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            // Image background using ShowNetworkImage
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: ShowNetworkImage(
+                imageSrc: subcategoryModel.image ?? "",
+                mobileBoxFit: BoxFit.cover,
               ),
+            ),
+            // Text overlay
+            Center(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 15,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Text(
+                  isArabic
+                      ? subcategoryModel.subCategoryName.toString()
+                      : subcategoryModel.subCategoryNameEn.toString(),
+                  style: const TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    wordSpacing: 2,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
